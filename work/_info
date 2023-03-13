@@ -1,0 +1,316 @@
+m255
+K3
+13
+cModel Technology
+dC:\altera\13.0sp1
+Econtador_m
+Z0 w1674994380
+Z1 DPx4 ieee 9 math_real 0 22 :iME`dTX54_U49lJNF5JI3
+Z2 DPx4 ieee 11 numeric_std 0 22 O3PF8EB`?j9=z7KT`fn941
+Z3 DPx3 std 6 textio 0 22 5>J:;AW>W0[[dW0I6EN1Q0
+Z4 DPx4 ieee 14 std_logic_1164 0 22 5=aWaoGZSMWIcH0i^f`XF1
+Z5 dP:\labdig\Keep-Talking-and-Nobody-Explodes
+Z6 8P:/labdig/Keep-Talking-and-Nobody-Explodes/contador_m.vhd
+Z7 FP:/labdig/Keep-Talking-and-Nobody-Explodes/contador_m.vhd
+l0
+L33
+VjU^U[D1h[WITLoYA:g=>d0
+Z8 OV;C;10.1d;51
+32
+Z9 !s108 1678744001.198000
+Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/labdig/Keep-Talking-and-Nobody-Explodes/contador_m.vhd|
+Z11 !s107 P:/labdig/Keep-Talking-and-Nobody-Explodes/contador_m.vhd|
+Z12 o-work work -2002 -explicit -O0
+Z13 tExplicit 1
+!s100 _1j8d8ikBY8MhMg62>DTz0
+!i10b 1
+Acomportamental
+R1
+R2
+R3
+R4
+DEx4 work 10 contador_m 0 22 jU^U[D1h[WITLoYA:g=>d0
+l50
+L48
+VZ2D<TXc^gXS9XGNPVRX[b3
+R8
+32
+R9
+R10
+R11
+R12
+R13
+!s100 `]_g?_[R7n;a<AeZ?mT430
+!i10b 1
+Efluxo_dados
+Z14 w1678743945
+R1
+R2
+R3
+R4
+R5
+Z15 8P:/labdig/Keep-Talking-and-Nobody-Explodes/fluxo_dados.vhd
+Z16 FP:/labdig/Keep-Talking-and-Nobody-Explodes/fluxo_dados.vhd
+l0
+L6
+V8K23[Eg26A;S37i:=BVe31
+R8
+32
+Z17 !s108 1678744001.303000
+Z18 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/labdig/Keep-Talking-and-Nobody-Explodes/fluxo_dados.vhd|
+Z19 !s107 P:/labdig/Keep-Talking-and-Nobody-Explodes/fluxo_dados.vhd|
+R12
+R13
+!s100 =bbKE?PdGhm[?;1J>bd4g1
+!i10b 1
+Astructural
+R1
+R2
+R3
+R4
+DEx4 work 11 fluxo_dados 0 22 8K23[Eg26A;S37i:=BVe31
+l60
+L15
+V8_5OQ>WjQQ1Ig2_hlGb4]2
+R8
+32
+R17
+R18
+R19
+R12
+R13
+!s100 QzJ8NH>@RG]S;O=`9RN2^2
+!i10b 1
+Aestrutural
+R1
+R2
+R3
+R4
+DEx4 work 11 fluxo_dados 0 22 2KeZd1geae=De0CKSmb`31
+l49
+L15
+VKgbmARUnUlAOWJD^;LWZC1
+R8
+32
+R18
+R12
+R13
+w1678738099
+R19
+!s108 1678738107.498000
+!s100 XjmXAkO2Gh^PN8lk0fV3i2
+!i10b 1
+Ehexa7seg
+Z20 w1675044236
+R3
+R4
+R5
+Z21 8P:/labdig/Keep-Talking-and-Nobody-Explodes/hexa7seg.vhd
+Z22 FP:/labdig/Keep-Talking-and-Nobody-Explodes/hexa7seg.vhd
+l0
+L24
+VC_0@[3GF^i_01C;iJ0cfj0
+R8
+32
+Z23 !s108 1678744001.415000
+Z24 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/labdig/Keep-Talking-and-Nobody-Explodes/hexa7seg.vhd|
+Z25 !s107 P:/labdig/Keep-Talking-and-Nobody-Explodes/hexa7seg.vhd|
+R12
+R13
+!s100 8IJ:C;A8TEo]8I:KdU?6;2
+!i10b 1
+Acomportamental
+R3
+R4
+DEx4 work 8 hexa7seg 0 22 C_0@[3GF^i_01C;iJ0cfj0
+l32
+L31
+VBmDMCkiB[0X:b6hkzb8AY1
+R8
+32
+R23
+R24
+R25
+R12
+R13
+!s100 g;h2@k@Y=zL;8ojC3F6ED0
+!i10b 1
+Ektne
+Z26 w1678739511
+R3
+R4
+R5
+Z27 8P:/labdig/Keep-Talking-and-Nobody-Explodes/ktne.vhd
+Z28 FP:/labdig/Keep-Talking-and-Nobody-Explodes/ktne.vhd
+l0
+L4
+V;=DO1P6L>Iza;EAn]SoI70
+R8
+32
+Z29 !s108 1678744001.540000
+Z30 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/labdig/Keep-Talking-and-Nobody-Explodes/ktne.vhd|
+Z31 !s107 P:/labdig/Keep-Talking-and-Nobody-Explodes/ktne.vhd|
+R12
+R13
+!s100 `XJz:bX3z;lW^ao9a=IB`0
+!i10b 1
+Astructural
+R3
+R4
+DEx4 work 4 ktne 0 22 ;=DO1P6L>Iza;EAn]SoI70
+l54
+L21
+VJNNQm8zRZ^olle33mNP_A1
+R8
+32
+R29
+R30
+R31
+R12
+R13
+!s100 `[h=8c_Ozj1CDIENH1OV@0
+!i10b 1
+Ektne_tb
+Z32 w1678743487
+R2
+R3
+R4
+R5
+Z33 8P:/labdig/Keep-Talking-and-Nobody-Explodes/ktne_tb.vhd
+Z34 FP:/labdig/Keep-Talking-and-Nobody-Explodes/ktne_tb.vhd
+l0
+L7
+V_??Od0M^<K;iSD?g>ED7g0
+R8
+32
+Z35 !s108 1678744001.863000
+Z36 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/labdig/Keep-Talking-and-Nobody-Explodes/ktne_tb.vhd|
+Z37 !s107 P:/labdig/Keep-Talking-and-Nobody-Explodes/ktne_tb.vhd|
+R12
+R13
+!s100 mm5dZ^7jL``JPGK6>NDK=3
+!i10b 1
+Atb
+R2
+R3
+R4
+DEx4 work 7 ktne_tb 0 22 _??Od0M^<K;iSD?g>ED7g0
+l38
+L10
+VW5]8`I8JPZCe;27T3MW`>0
+!s100 gIKO?U;h5ZS38dVE:e_on1
+R8
+32
+R35
+R36
+R37
+R12
+R13
+!i10b 1
+Eregistrador_n
+Z38 w1675043782
+R3
+R4
+R5
+Z39 8P:/labdig/Keep-Talking-and-Nobody-Explodes/registrador_n.vhd
+Z40 FP:/labdig/Keep-Talking-and-Nobody-Explodes/registrador_n.vhd
+l0
+L36
+V`@mAaj<A@iWQEcV7nb;;R3
+R8
+32
+Z41 !s108 1678744001.649000
+Z42 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/labdig/Keep-Talking-and-Nobody-Explodes/registrador_n.vhd|
+Z43 !s107 P:/labdig/Keep-Talking-and-Nobody-Explodes/registrador_n.vhd|
+R12
+R13
+!s100 iTT:1@QYPlg;<Je<cHh9F0
+!i10b 1
+Acomportamental
+R3
+R4
+DEx4 work 13 registrador_n 0 22 `@mAaj<A@iWQEcV7nb;;R3
+l51
+L49
+Vl]J[`oAFazP;ia<:cVaWz0
+R8
+32
+R41
+R42
+R43
+R12
+R13
+!s100 FND44lJIIz5;hhI<>ZhXG2
+!i10b 1
+Etimer
+Z44 w1678743997
+R2
+R3
+R4
+R5
+Z45 8P:/labdig/Keep-Talking-and-Nobody-Explodes/timer.vhd
+Z46 FP:/labdig/Keep-Talking-and-Nobody-Explodes/timer.vhd
+l0
+L5
+VK78]oJ=cTIf<URST4fRW13
+!s100 0eHQ6PoiYFHiKae@cPA^<0
+R8
+32
+!i10b 1
+Z47 !s108 1678744001.963000
+Z48 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/labdig/Keep-Talking-and-Nobody-Explodes/timer.vhd|
+Z49 !s107 P:/labdig/Keep-Talking-and-Nobody-Explodes/timer.vhd|
+R12
+R13
+Artl
+R2
+R3
+R4
+DEx4 work 5 timer 0 22 K78]oJ=cTIf<URST4fRW13
+l23
+L18
+VoE]TM6URJLNHL`[6fZ1fQ2
+!s100 @TM?CFfke?V:>jhePNENa2
+R8
+32
+!i10b 1
+R47
+R48
+R49
+R12
+R13
+Eunidade_controle
+Z50 w1678738804
+R3
+R4
+R5
+Z51 8P:/labdig/Keep-Talking-and-Nobody-Explodes/unidade_controle.vhd
+Z52 FP:/labdig/Keep-Talking-and-Nobody-Explodes/unidade_controle.vhd
+l0
+L4
+VW3Xb:N>A]Ha<5]F8<B=[l3
+R8
+32
+Z53 !s108 1678744001.773000
+Z54 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/labdig/Keep-Talking-and-Nobody-Explodes/unidade_controle.vhd|
+Z55 !s107 P:/labdig/Keep-Talking-and-Nobody-Explodes/unidade_controle.vhd|
+R12
+R13
+!s100 3lIED_AP1=3Y0]E40im^f2
+!i10b 1
+Afsm
+R3
+R4
+DEx4 work 16 unidade_controle 0 22 W3Xb:N>A]Ha<5]F8<B=[l3
+l20
+L17
+V2PY:BjbQeL]l5joHKn[j31
+R8
+32
+R53
+R54
+R55
+R12
+R13
+!s100 n8BlWg4QeiFWU@WcZJNg:1
+!i10b 1
