@@ -36,7 +36,7 @@ BEGIN
             -- be reset to all 0's, as you will enter an invalid state
             Qt <= seed;
          ELSIF en = '1' THEN
-            tmp := XOR Qt(1) XOR Qt(0);
+            tmp := Qt(1) XOR Qt(0);
             Qt <= tmp & Qt(2 DOWNTO 1);
          END IF;
 
