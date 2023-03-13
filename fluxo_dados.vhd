@@ -5,10 +5,14 @@ use ieee.math_real.all;
 
 entity fluxo_dados is
     port (
-        clock  : in std_logic;
-        countT : in std_logic;
-        resetT : in std_logic;
-        endT   : out std_logic
+        clock        : in std_logic;
+        countT       : in std_logic;
+        resetT       : in std_logic;
+        endT         : out std_logic
+        minutes      : out integer;
+        seconds_ten  : out integer;
+        seconds_unit : out integer
+
     );
 end entity fluxo_dados;
 
@@ -50,9 +54,9 @@ architecture structural of fluxo_dados is
             clk          : in std_logic;
             en           : in std_logic;
             rst          : in std_logic;
-            seconds_unit : out integer;
-            seconds_ten  : out integer;
             minutes      : out integer;
+            seconds_ten  : out integer;
+            seconds_unit : out integer;
             endT         : out std_logic
         );
     end component;
@@ -67,9 +71,9 @@ begin
         clk          => clock,
         en           => countT,
         rst          => resetT,
-        seconds_unit => seconds_unit,
-        seconds_ten  => seconds_ten,
         minutes      => minutes,
+        seconds_ten  => seconds_ten,
+        seconds_unit => seconds_unit,
         endT         => endT
     );
 

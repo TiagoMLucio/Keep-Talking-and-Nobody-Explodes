@@ -8,9 +8,9 @@ entity timer is
         clk          : in std_logic;
         en           : in std_logic;
         rst          : in std_logic;
-        seconds_unit : out integer;
-        seconds_ten  : out integer;
         minutes      : out integer;
+        seconds_ten  : out integer;
+        seconds_unit : out integer;
         endT         : out std_logic
     );
 end entity;
