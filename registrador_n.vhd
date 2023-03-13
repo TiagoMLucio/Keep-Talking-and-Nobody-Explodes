@@ -30,35 +30,38 @@
 -------------------------------------------------------------------------
 --
 
-library ieee;
-use ieee.std_logic_1164.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
 
-entity registrador_n is
-    generic (
-        constant N: integer := 8 
+ENTITY registrador_n IS
+    GENERIC (
+        CONSTANT N : INTEGER := 8
     );
-    port (
-        clock  : in  std_logic;
-        clear  : in  std_logic;
-        enable : in  std_logic;
-        D      : in  std_logic_vector (N-1 downto 0);
-        Q      : out std_logic_vector (N-1 downto 0) 
+    PORT (
+        clock : IN STD_LOGIC;
+        clear : IN STD_LOGIC;
+        enable : IN STD_LOGIC;
+        D : IN STD_LOGIC_VECTOR (N - 1 DOWNTO 0);
+        Q : OUT STD_LOGIC_VECTOR (N - 1 DOWNTO 0)
     );
-end entity registrador_n;
+END ENTITY registrador_n;
 
-architecture comportamental of registrador_n is
-    signal IQ: std_logic_vector(N-1 downto 0);
-begin
+ARCHITECTURE comportamental OF registrador_n IS
+    SIGNAL IQ : STD_LOGIC_VECTOR(N - 1 DOWNTO 0);
+BEGIN
 
-process(clock, clear, enable, IQ)
-    begin
-        if (clear = '1') then IQ <= (others => '0');
-        elsif (clock'event and clock='1') then
-            if (enable='1') then IQ <= D; 
-            else IQ <= IQ;
-            end if;
-        end if;
+    PROCESS (clock, clear, enable, IQ)
+    BEGIN
+        IF (clear = '1') THEN
+            IQ <= (OTHERS => '0');
+        ELSIF (clock'event AND clock = '1') THEN
+            IF (enable = '1') THEN
+                IQ <= D;
+            ELSE
+                IQ <= IQ;
+            END IF;
+        END IF;
         Q <= IQ;
-    end process;
-  
-end architecture comportamental;
+    END PROCESS;
+
+END ARCHITECTURE comportamental;
