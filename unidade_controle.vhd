@@ -9,6 +9,8 @@ entity unidade_controle is
         endT      : in std_logic;
         countT    : out std_logic;
         resetT    : out std_logic;
+        clearS    : out std_logic;
+        registraS : out std_logic;
         exploded  : out std_logic;
         db_estado : out std_logic_vector(3 downto 0)
     );
@@ -46,6 +48,14 @@ begin
 
     with Eatual select
         resetT <= '1' when preparation,
+        '0' when others;
+
+    with Eatual select
+        clearS <= '1' when initial,
+        '0' when others;
+
+    with Eatual select
+        registraS <= '1' when preparation,
         '0' when others;
 
     with Eatual select

@@ -1,4 +1,13 @@
-P:/labdig/Keep-Talking-and-Nobody-Explodes/contador_m.vhd {1 {vcom -work work -2002 -explicit P:/labdig/Keep-Talking-and-Nobody-Explodes/contador_m.vhd
+P:/labdig/Keep-Talking-and-Nobody-Explodes/timer.vhd {1 {vcom -work work -2002 -explicit P:/labdig/Keep-Talking-and-Nobody-Explodes/timer.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity timer
+-- Compiling architecture rtl of timer
+
+} {} {}} P:/labdig/Keep-Talking-and-Nobody-Explodes/contador_m.vhd {1 {vcom -work work -2002 -explicit P:/labdig/Keep-Talking-and-Nobody-Explodes/contador_m.vhd
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
 -- Loading package TEXTIO
@@ -17,6 +26,14 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling entity ktne_tb
 -- Compiling architecture tb of ktne_tb
 
+} {} {}} P:/labdig/Keep-Talking-and-Nobody-Explodes/unidade_controle.vhd {1 {vcom -work work -2002 -explicit P:/labdig/Keep-Talking-and-Nobody-Explodes/unidade_controle.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity unidade_controle
+-- Compiling architecture fsm of unidade_controle
+
 } {} {}} P:/labdig/Keep-Talking-and-Nobody-Explodes/registrador_n.vhd {1 {vcom -work work -2002 -explicit P:/labdig/Keep-Talking-and-Nobody-Explodes/registrador_n.vhd
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
@@ -25,13 +42,24 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling entity registrador_n
 -- Compiling architecture comportamental of registrador_n
 
-} {} {}} P:/labdig/Keep-Talking-and-Nobody-Explodes/unidade_controle.vhd {1 {vcom -work work -2002 -explicit P:/labdig/Keep-Talking-and-Nobody-Explodes/unidade_controle.vhd
+} {} {}} P:/labdig/Keep-Talking-and-Nobody-Explodes/fluxo_dados.vhd {1 {vcom -work work -2002 -explicit P:/labdig/Keep-Talking-and-Nobody-Explodes/fluxo_dados.vhd
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
--- Compiling entity unidade_controle
--- Compiling architecture fsm of unidade_controle
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Compiling entity fluxo_dados
+-- Compiling architecture structural of fluxo_dados
+
+} {} {}} P:/labdig/Keep-Talking-and-Nobody-Explodes/rng_mt19937.vhd {1 {vcom -work work -2002 -explicit P:/labdig/Keep-Talking-and-Nobody-Explodes/rng_mt19937.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity rng_mt19937
+-- Compiling architecture rng_mt19937_arch of rng_mt19937
 
 } {} {}} P:/labdig/Keep-Talking-and-Nobody-Explodes/hexa7seg.vhd {1 {vcom -work work -2002 -explicit P:/labdig/Keep-Talking-and-Nobody-Explodes/hexa7seg.vhd
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012

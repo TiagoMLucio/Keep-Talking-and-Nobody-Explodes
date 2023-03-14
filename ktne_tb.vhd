@@ -66,6 +66,9 @@ begin
         wait for clockPeriod;
         rst_in <= '0';
 
+        -- get random serial numbers
+        wait for 20 * clockPeriod;
+
         -- pulso do sinal de Iniciar (muda na borda de descida do clock)
         wait until falling_edge(clk_in);
         start_in <= '1';
