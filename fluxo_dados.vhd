@@ -10,10 +10,14 @@ entity fluxo_dados is
         resetT       : in std_logic;
         clearS       : in std_logic;
         registerS    : in std_logic;
+        resetE       : in std_logic;
+        db_err       : in std_logic;
         endT         : out std_logic;
         minutes      : out integer;
         seconds_ten  : out integer;
         seconds_unit : out integer;
+        endE         : out std_logic;
+        errors       : out std_logic_vector(1 downto 0);
         serial1      : out std_logic_vector(3 downto 0);
         serial2      : out std_logic_vector(3 downto 0)
     );
@@ -120,6 +124,20 @@ begin
         enable => registerS,
         D      => serial2_s,
         Q      => serial2
+    );
+
+    CountErrors : contador_m
+    generic map(
+        M => 4
+    )
+    port map(
+        clock   => clock,
+        zera_as => '0',
+        zera_s  => resetE,
+        conta   => db_err,
+        Q       => errors,
+        fim     => endE,
+        meio    => open
     );
 
 end architecture structural;

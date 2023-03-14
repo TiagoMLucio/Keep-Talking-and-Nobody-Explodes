@@ -7,10 +7,12 @@ entity unidade_controle is
         reset     : in std_logic;
         start     : in std_logic;
         endT      : in std_logic;
+        endE      : in std_logic;
         countT    : out std_logic;
         resetT    : out std_logic;
         clearS    : out std_logic;
-        registraS : out std_logic;
+        registerS : out std_logic;
+        resetE    : out std_logic;
         exploded  : out std_logic;
         db_estado : out std_logic_vector(3 downto 0)
     );
@@ -37,7 +39,7 @@ begin
         initial when Eatual = initial and start = '0' else
         preparation when Eatual = initial and start = '1' else
         game when Eatual = preparation else
-        lost when Eatual = game and endT = '1' else
+        lost when Eatual = game and (endT = '1' or endE = '1') else
         initial when Eatual = lost and start = '1' else
         Eatual;
 
@@ -51,11 +53,15 @@ begin
         '0' when others;
 
     with Eatual select
-        clearS <= '1' when initial,
+        registerS <= '1' when preparation,
         '0' when others;
 
     with Eatual select
-        registraS <= '1' when preparation,
+        resetE <= '1' when preparation,
+        '0' when others;
+
+    with Eatual select
+        clearS <= '1' when initial,
         '0' when others;
 
     with Eatual select
