@@ -1,5 +1,7 @@
 *
 ./work
 !/waves
+!/genius
+!**/**.vhd
 !.vhd
 !.gitignore
