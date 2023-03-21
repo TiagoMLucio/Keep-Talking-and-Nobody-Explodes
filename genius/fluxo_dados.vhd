@@ -14,219 +14,209 @@
 --------------------------------------------------------------------
 --
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.math_real.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.math_real.ALL;
 
-entity fluxo_dados is
-  port (
-    clock               : in std_logic;
-    zeraE               : in std_logic;
-    zeraCR              : in std_logic;
-    zeraT               : in std_logic;
-    contaE              : in std_logic;
-    contaCR             : in std_logic;
-    contaT              : in std_logic;
-    escreve             : in std_logic;
-    limpaRC             : in std_logic;
-    registraRC          : in std_logic;
-    leds_mem            : in std_logic;
-    chaves              : in std_logic_vector (3 downto 0);
-    jogada_correta      : out std_logic;
-    enderecoIgualRodada : out std_logic;
-    meioT               : out std_logic;
-    fimT                : out std_logic;
-    fimE                : out std_logic;
-    fimL                : out std_logic;
-    jogada_feita        : out std_logic;
-    leds                : out std_logic_vector (3 downto 0);
-    db_contagem         : out std_logic_vector (3 downto 0);
-    db_rodada           : out std_logic_vector (3 downto 0);
-    db_jogada           : out std_logic_vector (3 downto 0)
+ENTITY fluxo_dados IS
+  PORT (
+    clock : IN STD_LOGIC;
+    zeraE : IN STD_LOGIC;
+    zeraCR : IN STD_LOGIC;
+    zeraT : IN STD_LOGIC;
+    contaE : IN STD_LOGIC;
+    contaCR : IN STD_LOGIC;
+    contaT : IN STD_LOGIC;
+    escreve : IN STD_LOGIC;
+    limpaRC : IN STD_LOGIC;
+    registraRC : IN STD_LOGIC;
+    leds_mem : IN STD_LOGIC;
+    chaves : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+    jogada_correta : OUT STD_LOGIC;
+    enderecoIgualRodada : OUT STD_LOGIC;
+    meioT : OUT STD_LOGIC;
+    fimT : OUT STD_LOGIC;
+    fimE : OUT STD_LOGIC;
+    fimL : OUT STD_LOGIC;
+    jogada_feita : OUT STD_LOGIC;
+    leds : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
+    db_memoria : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
+    db_contagem : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
+    db_rodada : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
+    db_jogada : OUT STD_LOGIC_VECTOR (3 DOWNTO 0)
   );
-end entity fluxo_dados;
+END ENTITY fluxo_dados;
 
-architecture estrutural of fluxo_dados is
+ARCHITECTURE estrutural OF fluxo_dados IS
 
-  signal s_endereco, s_dado, s_jogada, s_rodada                    : std_logic_vector (3 downto 0);
-  signal s_not_zeraE, s_not_zeraCR, s_not_escreve, s_chaveacionada : std_logic;
+  SIGNAL s_endereco, s_dado, s_jogada, s_rodada : STD_LOGIC_VECTOR (3 DOWNTO 0);
+  SIGNAL s_not_zeraE, s_not_zeraCR, s_not_escreve, s_chaveacionada : STD_LOGIC;
 
-  component contador_163
-    port (
-      clock : in std_logic;
-      clr   : in std_logic;
-      ld    : in std_logic;
-      ent   : in std_logic;
-      enp   : in std_logic;
-      D     : in std_logic_vector (3 downto 0);
-      Q     : out std_logic_vector (3 downto 0);
-      rco   : out std_logic
+  COMPONENT comparador_85
+    PORT (
+      i_A3 : IN STD_LOGIC;
+      i_B3 : IN STD_LOGIC;
+      i_A2 : IN STD_LOGIC;
+      i_B2 : IN STD_LOGIC;
+      i_A1 : IN STD_LOGIC;
+      i_B1 : IN STD_LOGIC;
+      i_A0 : IN STD_LOGIC;
+      i_B0 : IN STD_LOGIC;
+      i_AGTB : IN STD_LOGIC;
+      i_ALTB : IN STD_LOGIC;
+      i_AEQB : IN STD_LOGIC;
+      o_AGTB : OUT STD_LOGIC;
+      o_ALTB : OUT STD_LOGIC;
+      o_AEQB : OUT STD_LOGIC
     );
-  end component;
+  END COMPONENT;
 
-  component comparador_85
-    port (
-      i_A3   : in std_logic;
-      i_B3   : in std_logic;
-      i_A2   : in std_logic;
-      i_B2   : in std_logic;
-      i_A1   : in std_logic;
-      i_B1   : in std_logic;
-      i_A0   : in std_logic;
-      i_B0   : in std_logic;
-      i_AGTB : in std_logic;
-      i_ALTB : in std_logic;
-      i_AEQB : in std_logic;
-      o_AGTB : out std_logic;
-      o_ALTB : out std_logic;
-      o_AEQB : out std_logic
+  COMPONENT ram_16x4 IS
+    PORT (
+      clk : IN STD_LOGIC;
+      endereco : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+      dado_entrada : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+      we : IN STD_LOGIC;
+      ce : IN STD_LOGIC;
+      dado_saida : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
     );
-  end component;
+  END COMPONENT;
 
-  component ram_16x4 is
-    port (
-      clk          : in std_logic;
-      endereco     : in std_logic_vector(3 downto 0);
-      dado_entrada : in std_logic_vector(3 downto 0);
-      we           : in std_logic;
-      ce           : in std_logic;
-      dado_saida   : out std_logic_vector(3 downto 0)
+  COMPONENT registrador_n IS
+    GENERIC (
+      CONSTANT N : INTEGER := 8
     );
-  end component;
+    PORT (
+      clock : IN STD_LOGIC;
+      clear : IN STD_LOGIC;
+      enable : IN STD_LOGIC;
+      D : IN STD_LOGIC_VECTOR (N - 1 DOWNTO 0);
+      Q : OUT STD_LOGIC_VECTOR (N - 1 DOWNTO 0)
+    );
+  END COMPONENT;
 
-  component registrador_n is
-    generic (
-      constant N : integer := 8
+  COMPONENT edge_detector IS
+    PORT (
+      clock : IN STD_LOGIC;
+      reset : IN STD_LOGIC;
+      sinal : IN STD_LOGIC;
+      pulso : OUT STD_LOGIC
     );
-    port (
-      clock  : in std_logic;
-      clear  : in std_logic;
-      enable : in std_logic;
-      D      : in std_logic_vector (N - 1 downto 0);
-      Q      : out std_logic_vector (N - 1 downto 0)
-    );
-  end component;
+  END COMPONENT;
 
-  component edge_detector is
-    port (
-      clock : in std_logic;
-      reset : in std_logic;
-      sinal : in std_logic;
-      pulso : out std_logic
+  COMPONENT contador_m IS
+    GENERIC (
+      CONSTANT M : INTEGER := 100 -- modulo do contador
     );
-  end component;
+    PORT (
+      clock : IN STD_LOGIC;
+      zera_as : IN STD_LOGIC;
+      zera_s : IN STD_LOGIC;
+      conta : IN STD_LOGIC;
+      Q : OUT STD_LOGIC_VECTOR(NATURAL(ceil(log2(real(M)))) - 1 DOWNTO 0);
+      fim : OUT STD_LOGIC;
+      meio : OUT STD_LOGIC
+    );
+  END COMPONENT;
 
-  component contador_m is
-    generic (
-      constant M : integer := 100 -- modulo do contador
-    );
-    port (
-      clock   : in std_logic;
-      zera_as : in std_logic;
-      zera_s  : in std_logic;
-      conta   : in std_logic;
-      Q       : out std_logic_vector(natural(ceil(log2(real(M)))) - 1 downto 0);
-      fim     : out std_logic;
-      meio    : out std_logic
-    );
-  end component;
-
-begin
+BEGIN
 
   -- sinais de controle ativos em alto
   -- sinais dos componentes ativos em baixo
-  s_not_zeraE   <= not zeraE;
-  s_not_zeraCR  <= not zeraCR;
-  s_not_escreve <= not escreve;
+  s_not_zeraE <= NOT zeraE;
+  s_not_zeraCR <= NOT zeraCR;
+  s_not_escreve <= NOT escreve;
 
-  s_chaveacionada <= chaves(0) or chaves(1) or chaves(2) or chaves(3);
+  s_chaveacionada <= chaves(0) OR chaves(1) OR chaves(2) OR chaves(3);
 
-  ContEnd : contador_163
-  port map(
+  ContEnd : contador_m
+  GENERIC MAP(
+  M => 4
+  PORT MAP(
     clock => clock,
-    clr   => s_not_zeraE, -- clr ativo em baixo
-    ld    => '1',
-    ent   => '1',
-    enp   => contaE,
-    D     => "0000",
-    Q     => s_endereco,
-    rco   => fimE
+    zera_as => '0',
+    zera_s => zeraE,
+    conta => contaE,
+    Q => s_endereco,
+    fim => fimE,
+    meio => OPEN
   );
-
-  ContRod : contador_163
-  port map(
+  ContRod : contador_m
+  GENERIC MAP(
+    M => 4
+  )
+  PORT MAP(
     clock => clock,
-    clr   => s_not_zeraCR, -- clr ativo em baixo
-    ld    => '1',
-    ent   => '1',
-    enp   => contaCR,
-    D     => "0000",
-    Q     => s_rodada,
-    rco   => fimL
+    zera_as => '0',
+    zera_s => zeraCR,
+    conta => contaCR,
+    Q => s_rodada,
+    fim => fimL,
+    meio => OPEN
   );
 
   CompJog : comparador_85
-  port map(
-    i_A3   => s_dado(3),
-    i_B3   => s_jogada(3),
-    i_A2   => s_dado(2),
-    i_B2   => s_jogada(2),
-    i_A1   => s_dado(1),
-    i_B1   => s_jogada(1),
-    i_A0   => s_dado(0),
-    i_B0   => s_jogada(0),
+  PORT MAP(
+    i_A3 => s_dado(3),
+    i_B3 => s_jogada(3),
+    i_A2 => s_dado(2),
+    i_B2 => s_jogada(2),
+    i_A1 => s_dado(1),
+    i_B1 => s_jogada(1),
+    i_A0 => s_dado(0),
+    i_B0 => s_jogada(0),
     i_AGTB => '0',
     i_ALTB => '0',
     i_AEQB => '1',
-    o_AGTB => open, -- saidas nao usadas
-    o_ALTB => open,
+    o_AGTB => OPEN, -- saidas nao usadas
+    o_ALTB => OPEN,
     o_AEQB => jogada_correta
   );
 
   CompEnd : comparador_85
-  port map(
-    i_A3   => s_rodada(3),
-    i_B3   => s_endereco(3),
-    i_A2   => s_rodada(2),
-    i_B2   => s_endereco(2),
-    i_A1   => s_rodada(1),
-    i_B1   => s_endereco(1),
-    i_A0   => s_rodada(0),
-    i_B0   => s_endereco(0),
+  PORT MAP(
+    i_A3 => s_rodada(3),
+    i_B3 => s_endereco(3),
+    i_A2 => s_rodada(2),
+    i_B2 => s_endereco(2),
+    i_A1 => s_rodada(1),
+    i_B1 => s_endereco(1),
+    i_A0 => s_rodada(0),
+    i_B0 => s_endereco(0),
     i_AGTB => '0',
     i_ALTB => '0',
     i_AEQB => '1',
-    o_AGTB => open, -- saidas nao usadas
-    o_ALTB => open,
+    o_AGTB => OPEN, -- saidas nao usadas
+    o_ALTB => OPEN,
     o_AEQB => enderecoIgualRodada
   );
 
   -- memoria: entity work.ram_16x4 (ram_mif)  -- usar esta linha para Intel Quartus
-  MemJog : entity work.ram_16x4 (ram_modelsim) -- usar arquitetura para ModelSim
-    port map(
-      clk          => clock,
-      endereco     => s_endereco,
+  MemJog : ENTITY work.ram_16x4 (ram_modelsim) -- usar arquitetura para ModelSim
+    PORT MAP(
+      clk => clock,
+      endereco => s_endereco,
       dado_entrada => s_jogada,
-      we           => s_not_escreve, -- we ativo em baixo
-      ce           => '0',
-      dado_saida   => s_dado
+      we => s_not_escreve, -- we ativo em baixo
+      ce => '0',
+      dado_saida => s_dado
     );
 
   RegChv : registrador_n
-  generic map(
+  GENERIC MAP(
     4
   )
-  port map(
-    clock  => clock,
-    clear  => limpaRC,
+  PORT MAP(
+    clock => clock,
+    clear => limpaRC,
     enable => registraRC,
-    D      => chaves,
-    Q      => s_jogada
+    D => chaves,
+    Q => s_jogada
   );
 
   detector_de_borda : edge_detector
-  port map(
+  PORT MAP(
     clock => clock,
     reset => zeraE,
     sinal => s_chaveacionada,
@@ -234,25 +224,25 @@ begin
   );
 
   Timer : contador_m
-  generic map(
+  GENERIC MAP(
     M => 1000
   )
-  port map(
-    clock   => clock,
+  PORT MAP(
+    clock => clock,
     zera_as => '0',
-    zera_s  => zeraT,
-    conta   => contaT,
-    Q       => open,
-    fim     => fimT,
-    meio    => meioT
+    zera_s => zeraT,
+    conta => contaT,
+    Q => OPEN,
+    fim => fimT,
+    meio => meioT
   );
 
-  with leds_mem select
-    leds <= s_dado when '1' else
+  WITH leds_mem SELECT
+    leds <= s_dado WHEN '1' ELSE
     chaves;
 
-  db_rodada   <= s_rodada;
+  db_rodada <= s_rodada;
   db_contagem <= s_endereco;
-  db_jogada   <= s_jogada;
+  db_jogada <= s_jogada;
 
-end architecture estrutural;
+END ARCHITECTURE estrutural;
