@@ -3,5 +3,6 @@
 !/waves
 !/genius
 !**/**.vhd
+!**/**.do
 !.vhd
 !.gitignore
