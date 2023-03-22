@@ -28,7 +28,6 @@ entity fluxo_dados is
         contaE              : in std_logic;
         contaCR             : in std_logic;
         contaT              : in std_logic;
-        escreve             : in std_logic;
         limpaRC             : in std_logic;
         registraRC          : in std_logic;
         leds_mem            : in std_logic;
@@ -54,7 +53,11 @@ architecture estrutural of fluxo_dados is
 
     signal endereco, rodada                                          : std_logic_vector (1 downto 0);
     signal s_endereco, s_dado, s_novo_dado, s_jogada, s_rodada       : std_logic_vector (3 downto 0);
+    signal colors                                                    : std_logic_vector (7 downto 0);
     signal s_not_zeraE, s_not_zeraCR, s_not_escreve, s_chaveacionada : std_logic;
+    signal sel_colors                                                : array(natural range <>) of std_logic_vector(1 downto 0);
+    signal s_colors                                                  : array(natural range <>) of std_logic_vector(3 downto 0);
+    signal colors                                                    : array(natural range <>) of std_logic_vector(3 downto 0);
 
     component comparador_85
         port (
@@ -123,13 +126,19 @@ architecture estrutural of fluxo_dados is
         );
     end component;
 
+    component decoder_2 is
+        port (
+            a : in std_logic_vector(1 downto 0);
+            b : out std_logic_vector(3 downto 0)
+        );
+    end component;
+
 begin
 
     -- sinais de controle ativos em alto
     -- sinais dos componentes ativos em baixo
-    s_not_zeraE   <= not zeraE;
-    s_not_zeraCR  <= not zeraCR;
-    s_not_escreve <= not escreve;
+    s_not_zeraE  <= not zeraE;
+    s_not_zeraCR <= not zeraCR;
 
     s_chaveacionada <= chaves(0) or chaves(1) or chaves(2) or chaves(3);
 
@@ -228,17 +237,6 @@ begin
         o_AEQB => enderecoIgualRodada
     );
 
-    -- memoria: entity work.ram_16x4 (ram_mif)  -- usar esta linha para Intel Quartus
-    MemJog : entity work.ram_16x4 (ram_modelsim) -- usar arquitetura para ModelSim
-        port map(
-            clk          => clock,
-            endereco     => s_endereco,
-            dado_entrada => s_jogada,
-            we           => s_not_escreve, -- we ativo em baixo
-            ce           => '0',
-            dado_saida   => s_dado
-        );
-
     RegChv : registrador_n
     generic map(
         4
@@ -271,6 +269,66 @@ begin
         Q       => open,
         fim     => fimT,
         meio    => meioT
+    );
+
+    prng_colors : contador_m
+    generic map(
+        M => 255
+    )
+    port map(
+        clock   => clock,
+        zera_as => '0',
+        zera_s  => '0',
+        conta   => '1',
+        Q       => colors,
+        fim     => open,
+        meio    => open
+    );
+
+    sel_color_1 <= colors(0) & colors(4);
+    sel_color_2 <= colors(7) & colors(3);
+    sel_color_3 <= colors(2) & colors(6);
+    sel_color_4 <= colors(1) & colors(5);
+
+    Dec1 : decoder_2
+    port map(
+        a => sel_color_1,
+        b => color_1
+    );
+
+    Dec2 : decoder_2
+    port map(
+        a => sel_color_2,
+        b => color_2
+    );
+
+    Dec3 : decoder_2
+    port map(
+        a => sel_color_3,
+        b => color_3
+    );
+
+    Dec4 : decoder_2
+    port map(
+        a => sel_color_4,
+        b => color_4
+    );
+
+    colors_gen : for i in 0 to 3 generate
+        sel_color_1 <= colors(0) & colors(4);
+
+    end generate; -- colors_gen
+
+    RegColor1 : registrador_n
+    generic map(
+        4
+    )
+    port map(
+        clock  => clock,
+        clear  => limpaRN,
+        enable => registerRN,
+        D = >,
+        Q =>
     );
 
     with leds_mem select
