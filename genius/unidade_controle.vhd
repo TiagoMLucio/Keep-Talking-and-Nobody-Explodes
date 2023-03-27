@@ -29,6 +29,7 @@ entity unidade_controle is
         contaE              : out std_logic;
         contaT              : out std_logic;
         contaCR             : out std_logic;
+        registraRN          : out std_logic;
         registraRC          : out std_logic;
         zeraE               : out std_logic;
         zeraT               : out std_logic;
@@ -42,8 +43,8 @@ end entity;
 
 architecture fsm of unidade_controle is
     type t_estado is (inicial, preparacao, espera_led, mostra_led, proximo_led,
-        compara_led, inicio_rod, compara_jog, proxima_jog, espera_jog, registra,
-        errou_jog, ultima_rod, proxima_rod, fim_acertou);
+        compara_led, espera_led2, inicio_rod, compara_jog, proxima_jog, espera_jog, 
+        registra, errou_jog, ultima_rod, proxima_rod, fim_acertou);
 
     signal Eatual, Eprox : t_estado;
 begin
@@ -73,7 +74,9 @@ begin
         mostra_led when (Eatual = espera_led and fimT = '1') or
         (Eatual = proximo_led) else
 
-        proximo_led when (Eatual = compara_led and enderecoIgualRodada = '0') else
+        espera_led2 when (Eatual = compara_led and enderecoIgualRodada = '0') else
+
+        proximo_led when (Eatual = espera_led2 and meioT = '1') else
 
         compara_led when (Eatual = mostra_led and meioT = '1') else
 
@@ -115,7 +118,11 @@ begin
         '0' when others;
 
     with Eatual select
-        zeraT <= '1' when proximo_led,
+        zeraT <= '1' when proximo_led | compara_led,
+        '0' when others;
+
+    with Eatual select
+        registraRN <= '1' when preparacao,
         '0' when others;
 
     with Eatual select
@@ -123,7 +130,7 @@ begin
         '0' when others;
 
     with Eatual select
-        contaT <= '1' when espera_led | mostra_led,
+        contaT <= '1' when espera_led | mostra_led | espera_led2,
         '0' when others;
 
     with Eatual select

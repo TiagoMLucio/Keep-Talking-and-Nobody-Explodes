@@ -23,7 +23,7 @@ entity modulo_genius is
 end entity;
 architecture estrutural of modulo_genius is
 
-    signal zeraE, zeraCR, zeraT, contaE, contaCR, contaT, leds_mem, escreve, meioT, limpaRC, registraRC, jogada_correta, enderecoIgualRodada, fimE, fimL, fimT, jogada_feita : std_logic;
+    signal zeraE, zeraCR, zeraT, contaE, contaCR, contaT, leds_mem, meioT, limpaRC, registraRN, registraRC, jogada_correta, enderecoIgualRodada, fimE, fimL, fimT, jogada_feita : std_logic;
     signal db_contagem_t, db_jogada_t, db_rodada_t, db_memoria_t, db_estado_t                                                                                                : std_logic_vector (3 downto 0);
 
     component fluxo_dados
@@ -35,7 +35,7 @@ architecture estrutural of modulo_genius is
             contaE              : in std_logic;
             contaCR             : in std_logic;
             contaT              : in std_logic;
-            escreve             : in std_logic;
+            registraRN          : in std_logic;
             limpaRC             : in std_logic;
             registraRC          : in std_logic;
             leds_mem            : in std_logic;
@@ -72,6 +72,7 @@ architecture estrutural of modulo_genius is
             contaE              : out std_logic;
             contaT              : out std_logic;
             contaCR             : out std_logic;
+            registraRN          : out std_logic;
             registraRC          : out std_logic;
             zeraE               : out std_logic;
             zeraT               : out std_logic;
@@ -101,7 +102,7 @@ begin
         contaE              => contaE,
         contaCR             => contaCR,
         contaT              => contaT,
-        escreve             => escreve,
+        registraRN          => registraRN,
         limpaRC             => limpaRC,
         registraRC          => registraRC,
         leds_mem            => leds_mem,
@@ -137,6 +138,7 @@ begin
         contaE              => contaE,
         contaT              => contaT,
         contaCR             => contaCR,
+        registraRN          => registraRN,
         registraRC          => registraRC,
         zeraE               => zeraE,
         zeraT               => zeraT,

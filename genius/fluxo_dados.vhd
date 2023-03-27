@@ -28,6 +28,7 @@ entity fluxo_dados is
         contaE              : in std_logic;
         contaCR             : in std_logic;
         contaT              : in std_logic;
+        registraRN : in std_logic;
         limpaRC             : in std_logic;
         registraRC          : in std_logic;
         leds_mem            : in std_logic;
@@ -51,13 +52,16 @@ end entity fluxo_dados;
 
 architecture estrutural of fluxo_dados is
 
+    type array_slv2 is array(natural range <>) of std_logic_vector(1 downto 0); 
+    type array_slv4 is array(natural range <>) of std_logic_vector(3 downto 0); 
+
     signal endereco, rodada                                          : std_logic_vector (1 downto 0);
     signal s_endereco, s_dado, s_novo_dado, s_jogada, s_rodada       : std_logic_vector (3 downto 0);
-    signal colors                                                    : std_logic_vector (7 downto 0);
-    signal s_not_zeraE, s_not_zeraCR, s_not_escreve, s_chaveacionada : std_logic;
-    signal sel_colors                                                : array(natural range <>) of std_logic_vector(1 downto 0);
-    signal s_colors                                                  : array(natural range <>) of std_logic_vector(3 downto 0);
-    signal colors                                                    : array(natural range <>) of std_logic_vector(3 downto 0);
+    signal prn_colors                                                    : std_logic_vector (7 downto 0);
+    signal s_not_zeraE, s_not_zeraCR, s_chaveacionada : std_logic;
+    signal sel_colors                                                : array_slv2(3 downto 0);
+    signal s_colors                                                  : array_slv4(3 downto 0);
+    signal colors                                                    : array_slv4(3 downto 0);
 
     component comparador_85
         port (
@@ -75,17 +79,6 @@ architecture estrutural of fluxo_dados is
             o_AGTB : out std_logic;
             o_ALTB : out std_logic;
             o_AEQB : out std_logic
-        );
-    end component;
-
-    component ram_16x4 is
-        port (
-            clk          : in std_logic;
-            endereco     : in std_logic_vector(3 downto 0);
-            dado_entrada : in std_logic_vector(3 downto 0);
-            we           : in std_logic;
-            ce           : in std_logic;
-            dado_saida   : out std_logic_vector(3 downto 0)
         );
     end component;
 
@@ -259,7 +252,7 @@ begin
 
     Timer : contador_m
     generic map(
-        M => 1000
+        M => 2000
     )
     port map(
         clock   => clock,
@@ -280,56 +273,42 @@ begin
         zera_as => '0',
         zera_s  => '0',
         conta   => '1',
-        Q       => colors,
+        Q       => prn_colors,
         fim     => open,
         meio    => open
     );
 
-    sel_color_1 <= colors(0) & colors(4);
-    sel_color_2 <= colors(7) & colors(3);
-    sel_color_3 <= colors(2) & colors(6);
-    sel_color_4 <= colors(1) & colors(5);
-
-    Dec1 : decoder_2
-    port map(
-        a => sel_color_1,
-        b => color_1
-    );
-
-    Dec2 : decoder_2
-    port map(
-        a => sel_color_2,
-        b => color_2
-    );
-
-    Dec3 : decoder_2
-    port map(
-        a => sel_color_3,
-        b => color_3
-    );
-
-    Dec4 : decoder_2
-    port map(
-        a => sel_color_4,
-        b => color_4
-    );
+    sel_colors(0) <= prn_colors(0) & prn_colors(4);
+    sel_colors(1) <= prn_colors(7) & prn_colors(3);
+    sel_colors(2) <= prn_colors(2) & prn_colors(6);
+    sel_colors(3) <= prn_colors(1) & prn_colors(5);
 
     colors_gen : for i in 0 to 3 generate
-        sel_color_1 <= colors(0) & colors(4);
+        Dec: decoder_2 
+        port map(
+            a => sel_colors(i),
+            b => s_colors(i)
+        );
 
+        RegColor : registrador_n
+        generic map(
+            4
+        )
+        port map(
+            clock  => clock,
+            clear  => limpaRC,
+            enable => registraRN,
+            D => s_colors(i),
+            Q => colors(i)
+        );
     end generate; -- colors_gen
 
-    RegColor1 : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaRN,
-        enable => registerRN,
-        D = >,
-        Q =>
-    );
+    with endereco select
+    s_dado <= colors(0) when "00",
+        colors(1) when "01",
+        colors(2) when "10",
+        colors(3) when "11",
+        "0000" when others; 
 
     with leds_mem select
         leds <= s_dado when '1',

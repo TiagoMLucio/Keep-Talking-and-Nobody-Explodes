@@ -8,7 +8,7 @@ entity decoder_2 is
     );
 end decoder_2;
 
-architecture behavorial of decoder2 is
+architecture behavorial of decoder_2 is
 begin
 
     b(0) <= not a(0) and not a(1);

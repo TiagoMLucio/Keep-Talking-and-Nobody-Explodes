@@ -88,10 +88,10 @@ begin
   process
     type pattern_array is array (integer range <>) of std_logic_vector(3 downto 0);
     constant jogadas : pattern_array (0 to 3) := (
-    "0010",
-    "1000",
-    "0100",
-    "0001");
+      "0010", 
+      "0001", 
+      "0010", 
+      "0100");
 
   begin
     report "BOT" severity note;
@@ -104,6 +104,9 @@ begin
     rst_in <= '1';
     wait for clockPeriod;
     rst_in <= '0';
+
+    wait for 675 * clockPeriod;
+
     -- pulso do sinal de Iniciar (muda na borda de descida do clock)
     wait until falling_edge(clk_in);
     iniciar_in <= '1';
