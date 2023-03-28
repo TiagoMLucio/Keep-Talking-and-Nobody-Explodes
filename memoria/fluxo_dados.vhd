@@ -11,6 +11,7 @@ entity fluxo_dados is
         limpaJ         : in std_logic;
         registraJ      : in std_logic;
         escreve        : in std_logic;
+        sel_addr       : in std_logic;
         chaves         : in std_logic_vector (3 downto 0);
         estagio        : out std_logic_vector (2 downto 0);
         display        : out std_logic_vector (3 downto 0);
@@ -27,11 +28,11 @@ end entity fluxo_dados;
 architecture estrutural of fluxo_dados is
 
     type array1Dx1D_slv is array (natural range <>) of std_logic_vector (1 downto 0);
-    type array1Dx1Dx1D_slv is array (natural range <>) of array1Dx1D_slv(4 downto 0);
+    type array1Dx1Dx1D_slv is array (natural range <>) of array1Dx1D_slv(0 to 4);
 
     signal nums : array1Dx1Dx1D_slv(0 to 4);
 
-    signal s_chaveacionada, sel_jogada, sel_addr, s_not_escreve                                          : std_logic;
+    signal s_chaveacionada, sel_jogada, s_not_escreve                                                    : std_logic;
     signal s_display, s_num_1, s_num_2, s_num_3, s_num_4, sel_dado                                       : std_logic_vector(1 downto 0);
     signal s_endereco, s_estagio, estagio_passado                                                        : std_logic_vector(2 downto 0);
     signal pos_jogada, num_jogado, s_jogada, mem_num, mem_pos, valor, s_dado, num_1, num_2, num_3, num_4 : std_logic_vector(3 downto 0);
@@ -246,10 +247,10 @@ begin
     "011" when ((s_estagio = "100" and s_display = "10")) else
     "100";
 
-    sel_dado <= "00" when (s_estagio = "010" and (s_display = "00" or s_display = "01")) else
-    "01" when ((s_estagio = "001" and (s_display = "01" or s_display = "11")) or
-    (s_estagio = "010" and not (s_display = "01")) or
+    sel_dado <= "00" when ((s_estagio = "010" and (s_display = "00" or s_display = "01")) or
     (s_estagio = "100")) else
+    "01" when ((s_estagio = "001" and (s_display = "01" or s_display = "11")) or
+    (s_estagio = "011" and not (s_display = "01"))) else
     "10";
 
     valor <= "0001" when ((s_estagio = "001" and s_display = "10") or
