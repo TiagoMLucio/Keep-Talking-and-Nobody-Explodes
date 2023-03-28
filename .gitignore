@@ -1,8 +1,13 @@
 *
 ./work
+
 !/waves
 !/genius
+!/memoria
+
+!.vhd
+!.do
 !**/**.vhd
 !**/**.do
-!.vhd
+
 !.gitignore

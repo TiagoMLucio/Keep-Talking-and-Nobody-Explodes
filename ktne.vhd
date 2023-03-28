@@ -7,7 +7,6 @@ entity ktne is
         clock            : in std_logic;
         reset            : in std_logic;
         start            : in std_logic;
-        db_err           : in std_logic;
         minutes_hex      : out std_logic_vector(6 downto 0);
         seconds_ten_hex  : out std_logic_vector(6 downto 0);
         seconds_unit_hex : out std_logic_vector(6 downto 0);
@@ -71,6 +70,27 @@ architecture structural of ktne is
         );
     end component;
 
+    component modulo_genius is
+        port (
+            clock       : in std_logic;
+            reset       : in std_logic;
+            iniciar     : in std_logic;
+            botoes      : in std_logic_vector (3 downto 0);
+            tem_vogal   : in std_logic;
+            erros       : in std_logic_vector(1 downto 0);
+            pronto      : out std_logic;
+            errou       : out std_logic;
+            leds        : out std_logic_vector (3 downto 0);
+            db_clock    : out std_logic;
+            db_igual    : out std_logic;
+            db_contagem : out std_logic_vector (6 downto 0);
+            db_memoria  : out std_logic_vector (6 downto 0);
+            db_jogada   : out std_logic_vector (6 downto 0);
+            db_rodada   : out std_logic_vector (6 downto 0);
+            db_estado   : out std_logic_vector (6 downto 0)
+        );
+    end component;
+
 begin
 
     fd : fluxo_dados
@@ -107,6 +127,26 @@ begin
         exploded  => exploded,
         db_estado => db_estado
     );
+
+    genius : modulo_genius
+    port map(
+        clock       => clock,
+        reset       => reset,
+        iniciar     => start,
+        botoes      => botoes,
+        tem_vogal   => tem_vogal,
+        erros       => errors,
+        pronto      => pronto_genius,
+        errou       => err,
+        leds        => leds_genius,
+        db_clock    => open,
+        db_igual    => open,
+        db_contagem => open,
+        db_memoria  => open,
+        db_jogada   => open,
+        db_rodada   => open,
+        db_estado   => open
+    )
 
     minutes_s      <= std_logic_vector(to_unsigned(minutes, 4));
     seconds_unit_s <= std_logic_vector(to_unsigned(seconds_unit, 4));

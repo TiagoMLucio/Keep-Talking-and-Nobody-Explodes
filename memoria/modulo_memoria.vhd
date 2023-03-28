@@ -1,59 +1,43 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity modulo_genius is
+entity modulo_memoria is
     port (
-        clock       : in std_logic;
-        reset       : in std_logic;
-        iniciar     : in std_logic;
-        botoes      : in std_logic_vector (3 downto 0);
-        tem_vogal   : in std_logic;
-        erros       : in std_logic_vector(1 downto 0);
-        pronto      : out std_logic;
-        errou       : out std_logic;
-        leds        : out std_logic_vector (3 downto 0);
-        db_clock    : out std_logic;
-        db_igual    : out std_logic;
-        db_contagem : out std_logic_vector (6 downto 0);
-        db_memoria  : out std_logic_vector (6 downto 0);
-        db_jogada   : out std_logic_vector (6 downto 0);
-        db_rodada   : out std_logic_vector (6 downto 0);
-        db_estado   : out std_logic_vector (6 downto 0)
+        clock     : in std_logic;
+        reset     : in std_logic;
+        iniciar   : in std_logic;
+        botoes    : in std_logic_vector (3 downto 0);
+        tem_vogal : in std_logic;
+        erros     : in std_logic_vector(1 downto 0);
+        pronto    : out std_logic;
+        errou     : out std_logic;
+        leds      : out std_logic_vector (3 downto 0)
     );
 end entity;
-architecture estrutural of modulo_genius is
+
+architecture estrutural of modulo_memoria is
 
     signal zeraE, zeraCR, zeraT, contaE, contaCR, contaT, leds_mem, meioT, limpaRC, registraRN, registraRC, jogada_correta, enderecoIgualRodada, fimE, fimL, fimT, jogada_feita : std_logic;
-    signal db_contagem_t, db_jogada_t, db_rodada_t, db_memoria_t, db_estado_t                                                                                                : std_logic_vector (3 downto 0);
+    signal db_contagem_t, db_jogada_t, db_rodada_t, db_memoria_t, db_estado_t                                                                                                   : std_logic_vector (3 downto 0);
 
     component fluxo_dados
         port (
-            clock               : in std_logic;
-            zeraE               : in std_logic;
-            zeraCR              : in std_logic;
-            zeraT               : in std_logic;
-            contaE              : in std_logic;
-            contaCR             : in std_logic;
-            contaT              : in std_logic;
-            registraRN          : in std_logic;
-            limpaRC             : in std_logic;
-            registraRC          : in std_logic;
-            leds_mem            : in std_logic;
-            tem_vogal           : in std_logic;
-            erros               : in std_logic_vector(1 downto 0);
-            chaves              : in std_logic_vector (3 downto 0);
-            jogada_correta      : out std_logic;
-            enderecoIgualRodada : out std_logic;
-            meioT               : out std_logic;
-            fimT                : out std_logic;
-            fimE                : out std_logic;
-            fimL                : out std_logic;
-            jogada_feita        : out std_logic;
-            leds                : out std_logic_vector (3 downto 0);
-            db_memoria          : out std_logic_vector (3 downto 0);
-            db_contagem         : out std_logic_vector (3 downto 0);
-            db_rodada           : out std_logic_vector (3 downto 0);
-            db_jogada           : out std_logic_vector (3 downto 0)
+            clock          : in std_logic;
+            zeraE          : in std_logic;
+            contaE         : in std_logic;
+            limpaJ         : in std_logic;
+            registraJ      : in std_logic;
+            escreve        : in std_logic;
+            chaves         : in std_logic_vector (3 downto 0);
+            estagio        : out std_logic_vector (2 downto 0);
+            display        : out std_logic_vector (3 downto 0);
+            num1           : out std_logic_vector (3 downto 0);
+            num2           : out std_logic_vector (3 downto 0);
+            num3           : out std_logic_vector (3 downto 0);
+            num4           : out std_logic_vector (3 downto 0);
+            fimE           : out std_logic;
+            jogada_feita   : out std_logic;
+            jogada_correta : out std_logic
         );
     end component;
 
