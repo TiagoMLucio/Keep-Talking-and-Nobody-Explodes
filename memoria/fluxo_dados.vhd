@@ -236,7 +236,7 @@ begin
     (s_estagio = "011")) else
     '0';
 
-    estagio_passado <= "000" when ((s_estagio = "001" and (s_display = "01" or s_display = "011")) or
+    estagio_passado <= "000" when ((s_estagio = "001" and (s_display = "01" or s_display = "11")) or
     (s_estagio = "010" and s_display = "01") or
     (s_estagio = "011" and s_display = "00") or
     (s_estagio = "100" and s_display = "00")) else
