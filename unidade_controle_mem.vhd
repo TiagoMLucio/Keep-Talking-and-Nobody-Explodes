@@ -22,6 +22,7 @@ entity unidade_controle_mem is
         fimE           : in std_logic;
         jogada_feita   : in std_logic;
         jogada_correta : in std_logic;
+        exploded       : in std_logic;
         zeraE          : out std_logic;
         contaE         : out std_logic;
         limpaJ         : out std_logic;
@@ -53,7 +54,7 @@ begin
 
     -- logica de proximo estado
     Eprox <=
-        inicial when (reset = '1') or
+        inicial when (reset = '1' or exploded = '1') or
         (Eatual = inicial and iniciar = '0') else
 
         preparacao when Eatual = inicial and iniciar = '1' else

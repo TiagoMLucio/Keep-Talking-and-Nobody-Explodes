@@ -42,7 +42,7 @@ begin
         initial when Eatual = initial and start = '0' else
         preparation when Eatual = initial and start = '1' else
         game when Eatual = preparation else
-        won when Eatual = won and (pronto_gen = '1' and pronto_mem = '1') else
+        won when Eatual = game and (pronto_gen = '1' and pronto_mem = '1') else
         lost when Eatual = game and (endT = '1' or endE = '1') else
         initial when Eatual = lost and start = '1' else
         Eatual;

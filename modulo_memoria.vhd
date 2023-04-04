@@ -7,6 +7,7 @@ entity modulo_memoria is
         reset     : in std_logic;
         iniciar   : in std_logic;
         botoes    : in std_logic_vector (3 downto 0);
+        exploded  : in std_logic;
         pronto    : out std_logic;
         err       : out std_logic;
         estagio   : out std_logic_vector (4 downto 0);
@@ -55,6 +56,7 @@ architecture estrutural of modulo_memoria is
             fimE           : in std_logic;
             jogada_feita   : in std_logic;
             jogada_correta : in std_logic;
+            exploded       : in std_logic;
             zeraE          : out std_logic;
             contaE         : out std_logic;
             limpaJ         : out std_logic;
@@ -107,6 +109,7 @@ begin
         fimE           => fimE,
         jogada_feita   => jogada_feita,
         jogada_correta => jogada_correta,
+        exploded       => exploded,
         zeraE          => zeraE,
         contaE         => contaE,
         limpaJ         => limpaJ,

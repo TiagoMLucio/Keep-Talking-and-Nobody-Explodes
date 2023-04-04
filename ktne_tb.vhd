@@ -94,7 +94,14 @@ begin
 
         botoes_mem  => botoes_mem_in,
         estagio_mem => estagio_mem_out,
-        pronto_mem  => pronto_mem_out
+        pronto_mem  => pronto_mem_out,
+
+        hex0 => hex0_out,
+        hex1 => hex1_out,
+        hex2 => hex2_out,
+        hex3 => hex3_out,
+        hex4 => hex4_out,
+        hex5 => hex5_out
     );
 
     ---- Gera sinais de estimulo para a simulacao
@@ -102,17 +109,17 @@ begin
     process 
         type pattern_array is array (integer range <>) of std_logic_vector(3 downto 0);
         constant jogadas_gen : pattern_array (0 to 3) := (
+        "0100", 
         "0010", 
-        "0001", 
-        "0010", 
-        "0100");
+        "1000", 
+        "1000");
 
         constant jogadas_mem : pattern_array (0 to 4) := (
           "0010", 
+          "0001", 
           "1000", 
-          "0100", 
-          "0010",
-          "0100");
+          "0001",
+          "1000");
     begin
         report "BOT" severity note;
 
@@ -144,12 +151,16 @@ begin
                 botoes_gen_in <= jogadas_gen(j);
                 wait for 10 * clockPeriod;
                 botoes_gen_in <= "0000";
-                wait for 5 * 1000 * clockPeriod;
+                wait for 2 * 1000 * clockPeriod;
             end loop loop_jogadas1;
+            
+            wait for 10 * 1000 * clockPeriod;
         
         end loop loop_rodadas1;
     
         wait for 30 * 1000 * clockPeriod;
+
+        sel_hex_in <= '1';
 
         -- Ganha Memoria
         loop_estagios : for e in 0 to 4 loop
@@ -157,8 +168,10 @@ begin
             botoes_mem_in <= jogadas_mem(e);
             wait for 10 * clockPeriod;
             botoes_mem_in <= "0000";
-            wait for 5 * 1000 * clockPeriod;
+            wait for 10 * 1000 * clockPeriod;
         end loop loop_estagios;
+
+        sel_hex_in <= '0';
 
         wait for 2 * 60 * 1000 * clockPeriod;
 

@@ -36,7 +36,7 @@ end entity;
 
 architecture structural of ktne is
 
-    signal countT, resetT, endT, clearS, registerS, endE, resetE, tem_letra, err_gen, err_mem, s_pronto_gen, s_pronto_mem                            : std_logic;
+    signal countT, resetT, endT, clearS, registerS, endE, resetE, tem_letra, err_gen, err_mem, s_pronto_gen, s_pronto_mem, s_exploded                : std_logic;
     signal minutes, seconds_ten, seconds_unit                                                                                                        : integer;
     signal minutes_s, seconds_ten_s, seconds_unit_s, serial1, serial2, errors_s                                                                      : std_logic_vector(3 downto 0);
     signal errors                                                                                                                                    : std_logic_vector(1 downto 0);
@@ -98,6 +98,7 @@ architecture structural of ktne is
             botoes      : in std_logic_vector (3 downto 0);
             tem_letra   : in std_logic;
             erros       : in std_logic_vector(1 downto 0);
+            exploded    : in std_logic;
             pronto      : out std_logic;
             errou       : out std_logic;
             leds        : out std_logic_vector (3 downto 0);
@@ -117,6 +118,7 @@ architecture structural of ktne is
             reset     : in std_logic;
             iniciar   : in std_logic;
             botoes    : in std_logic_vector (3 downto 0);
+            exploded  : in std_logic;
             pronto    : out std_logic;
             err       : out std_logic;
             estagio   : out std_logic_vector (4 downto 0);
@@ -166,7 +168,7 @@ begin
         registerS  => registerS,
         resetE     => resetE,
         defused    => defused,
-        exploded   => exploded,
+        exploded   => s_exploded,
         db_estado  => db_estado
     );
 
@@ -178,7 +180,8 @@ begin
         botoes      => botoes_gen,
         tem_letra   => tem_letra,
         erros       => errors,
-        pronto      => pronto_gen,
+        exploded    => s_exploded,
+        pronto      => s_pronto_gen,
         errou       => err_gen,
         leds        => leds_gen,
         db_clock    => open,
@@ -196,7 +199,8 @@ begin
         reset     => reset,
         iniciar   => start,
         botoes    => botoes_mem,
-        pronto    => pronto_mem,
+        exploded  => s_exploded,
+        pronto    => s_pronto_mem,
         err       => err_mem,
         estagio   => estagio_mem,
         display   => display_mem,
@@ -255,13 +259,15 @@ begin
     pronto_gen <= s_pronto_gen;
     pronto_mem <= s_pronto_mem;
 
+    exploded <= s_exploded;
+
     hex0 <= serial2_hex when sel_hex = '0' else
         num4_mem;
 
     hex1 <= serial1_hex when sel_hex = '0' else
         num3_mem;
 
-    hex2 <= errors_s when sel_hex = '0' else
+    hex2 <= errors_hex when sel_hex = '0' else
         num2_mem;
 
     hex3 <= seconds_unit_hex when sel_hex = '0' else

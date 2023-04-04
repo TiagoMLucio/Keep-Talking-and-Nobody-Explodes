@@ -9,6 +9,7 @@ entity modulo_genius is
         botoes      : in std_logic_vector (3 downto 0);
         tem_letra   : in std_logic;
         erros       : in std_logic_vector(1 downto 0);
+        exploded    : in std_logic;
         pronto      : out std_logic;
         errou       : out std_logic;
         leds        : out std_logic_vector (3 downto 0);
@@ -68,6 +69,7 @@ architecture estrutural of modulo_genius is
             jogada_feita        : in std_logic;
             enderecoIgualRodada : in std_logic;
             jogada_correta      : in std_logic;
+            exploded            : in std_logic;
             leds_mem            : out std_logic;
             contaE              : out std_logic;
             contaT              : out std_logic;
@@ -134,6 +136,7 @@ begin
         jogada_feita        => jogada_feita,
         enderecoIgualRodada => enderecoIgualRodada,
         jogada_correta      => jogada_correta,
+        exploded            => exploded,
         leds_mem            => leds_mem,
         contaE              => contaE,
         contaT              => contaT,

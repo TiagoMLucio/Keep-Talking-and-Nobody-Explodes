@@ -25,6 +25,7 @@ entity unidade_controle_gen is
         jogada_feita        : in std_logic;
         enderecoIgualRodada : in std_logic;
         jogada_correta      : in std_logic;
+        exploded            : in std_logic;
         leds_mem            : out std_logic;
         contaE              : out std_logic;
         contaT              : out std_logic;
@@ -43,7 +44,7 @@ end entity;
 
 architecture fsm of unidade_controle_gen is
     type t_estado is (inicial, preparacao, espera_led, mostra_led, proximo_led,
-        compara_led, espera_led2, inicio_rod, compara_jog, proxima_jog, espera_jog, 
+        compara_led, espera_led2, inicio_rod, compara_jog, proxima_jog, espera_jog,
         registra, errou_jog, ultima_rod, proxima_rod, fim_acertou);
 
     signal Eatual, Eprox : t_estado;
@@ -61,7 +62,7 @@ begin
 
     -- logica de proximo estado
     Eprox <=
-        inicial when (reset = '1') or
+        inicial when (reset = '1' or exploded = '1') or
         (Eatual = inicial and iniciar = '0') else
 
         preparacao when Eatual = inicial and iniciar = '1' else
@@ -81,7 +82,7 @@ begin
         compara_led when (Eatual = mostra_led and meioT = '1') else
 
         inicio_rod when (Eatual = espera_led or Eatual = mostra_led or
-        Eatual = proximo_led or Eatual = compara_led) and jogada_feita = '1' else
+        Eatual = proximo_led or Eatual = compara_led or Eatual = espera_led2) and jogada_feita = '1' else
 
         compara_jog when (Eatual = inicio_rod) or
         (Eatual = registra) else
