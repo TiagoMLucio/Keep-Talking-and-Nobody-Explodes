@@ -25,6 +25,7 @@ entity unidade_controle is
         zeraE          : out std_logic;
         contaE         : out std_logic;
         limpaJ         : out std_logic;
+        registraN      : out std_logic;
         registraJ      : out std_logic;
         escreve        : out std_logic;
         sel_addr       : out std_logic;
@@ -35,7 +36,7 @@ entity unidade_controle is
 end entity;
 
 architecture fsm of unidade_controle is
-    type t_estado is (inicial, preparacao, espera, registra, salva, compara, ultimo, proximo, errou, fim_acertou);
+    type t_estado is (inicial, preparacao, inicio_est, espera, registra, salva, compara, ultimo, proximo, errou, fim_acertou);
 
     signal Eatual, Eprox : t_estado;
 begin
@@ -45,83 +46,90 @@ begin
     begin
         if reset = '1' then
             Eatual <= inicial;
-            elsif clock'event and clock = '1' then
+        elsif clock'event and clock = '1' then
             Eatual <= Eprox;
         end if;
     end process;
 
     -- logica de proximo estado
     Eprox <=
-    inicial when (reset = '1') or
-    (Eatual = inicial and iniciar = '0') else
+        inicial when (reset = '1') or
+        (Eatual = inicial and iniciar = '0') else
 
-    preparacao when Eatual = inicial and iniciar = '1' else
+        preparacao when Eatual = inicial and iniciar = '1' else
 
-    espera when (Eatual = preparacao) or
-    (Eatual = errou) or
-    (Eatual = proximo) else
+        inicio_est when (Eatual = preparacao) or
+        (Eatual = errou) or
+        (Eatual = proximo) else
 
-    registra when (Eatual = espera and jogada_feita = '1') else
+        espera when Eatual = inicio_est else
 
-    salva when (Eatual = registra) else
+        registra when (Eatual = espera and jogada_feita = '1') else
 
-    compara when (Eatual = salva) else
+        salva when (Eatual = registra) else
 
-    proximo when (Eatual = ultimo and fimE = '0') else
+        compara when (Eatual = salva) else
 
-    ultimo when (Eatual = compara and jogada_correta = '1') else
+        proximo when (Eatual = ultimo and fimE = '0') else
 
-    errou when (Eatual = compara and jogada_correta = '0') else
+        ultimo when (Eatual = compara and jogada_correta = '1') else
 
-    fim_acertou when (Eatual = ultimo and fimE = '1') else
+        errou when (Eatual = compara and jogada_correta = '0') else
 
-    Eatual;
+        fim_acertou when (Eatual = ultimo and fimE = '1') else
+
+        Eatual;
 
     -- logica de saída (maquina de Moore)
     with Eatual select
-    limpaJ <= '1' when inicial,
-    '0' when others;
+        limpaJ <= '1' when inicial,
+        '0' when others;
 
     with Eatual select
-    zeraE <= '1' when preparacao | errou,
-    '0' when others;
+        zeraE <= '1' when preparacao | errou,
+        '0' when others;
 
     with Eatual select
-    registraJ <= '1' when registra,
-    '0' when others;
+        registraN <= '1' when inicio_est,
+        '0' when others;
 
     with Eatual select
-    escreve <= '1' when salva,
-    '0' when others;
+        registraJ <= '1' when registra,
+        '0' when others;
 
     with Eatual select
-    sel_addr <= '1' when salva,
-    '0' when others;
+        escreve <= '1' when salva,
+        '0' when others;
 
     with Eatual select
-    contaE <= '1' when proximo,
-    '0' when others;
+        sel_addr <= '1' when salva,
+        '0' when others;
 
     with Eatual select
-    err <= '1' when errou,
-    '0' when others;
+        contaE <= '1' when proximo,
+        '0' when others;
 
     with Eatual select
-    pronto <= '1' when fim_acertou,
-    '0' when others;
+        err <= '1' when errou,
+        '0' when others;
+
+    with Eatual select
+        pronto <= '1' when fim_acertou,
+        '0' when others;
 
     -- saida de depuracao (db_estado)
     with Eatual select
-    db_estado <= "0000" when inicial, -- 0
-    "0001" when preparacao,           -- 1
-    "0010" when espera,               -- 2
-    "0011" when registra,             -- 3
-    "0100" when salva,                -- 4
-    "0101" when compara,              -- 5
-    "0110" when ultimo,               -- 6
-    "0111" when proximo,              -- 7
-    "1101" when errou,                -- D
-    "1110" when fim_acertou,          -- E
-    "1111" when others;               -- F 
+        db_estado <= "0000" when inicial, -- 0
+        "0001" when preparacao,           -- 1
+        "0010" when inicio_est,           -- 2
+        "0011" when espera,               -- 3
+        "0100" when registra,             -- 4
+        "0101" when salva,                -- 5
+        "0110" when compara,              -- 6
+        "0111" when ultimo,               -- 7
+        "1000" when proximo,              -- 8
+        "1101" when errou,                -- D
+        "1110" when fim_acertou,          -- E
+        "1111" when others;               -- F 
 
 end architecture fsm;

@@ -9,7 +9,6 @@ entity fluxo_dados is
         zeraE          : in std_logic;
         contaE         : in std_logic;
         limpaJ         : in std_logic;
-        registraN      : in std_logic;
         registraJ      : in std_logic;
         escreve        : in std_logic;
         sel_addr       : in std_logic;
@@ -28,13 +27,15 @@ end entity fluxo_dados;
 
 architecture estrutural of fluxo_dados is
 
-    signal s_chaveacionada, sel_jogada, s_not_escreve                                       : std_logic;
-    signal sel_display, sel_num1, sel_num2, sel_num3, sel_num4, sel_dado                    : std_logic_vector(1 downto 0);
-    signal s_endereco, s_estagio, estagio_passado, sel_prns                                 : std_logic_vector(2 downto 0);
-    signal pos_jogada, num_jogado, s_jogada, mem_num, mem_pos, valor, s_dado                : std_logic_vector(3 downto 0);
-    signal t_display, s_display, s_num1, s_num2, s_num3, s_num4, num_1, num_2, num_3, num_4 : std_logic_vector(3 downto 0);
-    signal prns                                                                             : std_logic_vector(6 downto 0);
-    signal nums_t, nums                                                                     : std_logic_vector(7 downto 0);
+    type array1Dx1D_slv is array (natural range <>) of std_logic_vector (1 downto 0);
+    type array1Dx1Dx1D_slv is array (natural range <>) of array1Dx1D_slv(0 to 4);
+
+    signal nums : array1Dx1Dx1D_slv(0 to 4);
+
+    signal s_chaveacionada, sel_jogada, s_not_escreve                                                    : std_logic;
+    signal s_display, s_num_1, s_num_2, s_num_3, s_num_4, sel_dado                                       : std_logic_vector(1 downto 0);
+    signal s_endereco, s_estagio, estagio_passado                                                        : std_logic_vector(2 downto 0);
+    signal pos_jogada, num_jogado, s_jogada, mem_num, mem_pos, valor, s_dado, num_1, num_2, num_3, num_4 : std_logic_vector(3 downto 0);
 
     component comparador_85
         port (
@@ -114,129 +115,11 @@ begin
 
     s_not_escreve <= not escreve;
 
-    Prng : contador_m
-    generic map(
-        M => 96
-    )
-    port map(
-        clock   => clock,
-        zera_as => '0',
-        zera_s  => limpaJ,
-        conta   => '1',
-        Q       => prns,
-        fim     => open,
-        meio    => open
-    );
-
-    sel_display <= prns(1 downto 0);
-
-    sel_prns <= prns(6 downto 4);
-
-    with sel_prns select
-        nums_t <= "11100100" when "000",
-        "10110100" when "001",
-        "11011000" when "010",
-        "01111000" when "011",
-        "10011100" when "100",
-        "01101100" when "101",
-        "00000000" when others;
-
-    nums <= nums_t(nums_t'length - 2 * to_integer(unsigned(prns(3 downto 2))) - 1 downto 0) & nums_t(nums_t'length - 1 downto nums_t'length - 2 * to_integer(unsigned(prns(3 downto 2))));
-
-    sel_num1 <= nums(1 downto 0);
-    sel_num2 <= nums(3 downto 2);
-    sel_num3 <= nums(5 downto 4);
-    sel_num4 <= nums(7 downto 6);
-
-    DecDisplay : decoder_2
-    port map(
-        a => sel_display,
-        b => t_display
-    );
-
-    DecNum1 : decoder_2
-    port map(
-        a => sel_num1,
-        b => s_num1
-    );
-
-    DecNum2 : decoder_2
-    port map(
-        a => sel_num2,
-        b => s_num2
-    );
-
-    DecNum3 : decoder_2
-    port map(
-        a => sel_num3,
-        b => s_num3
-    );
-
-    DecNum4 : decoder_2
-    port map(
-        a => sel_num4,
-        b => s_num4
-    );
-
-    RegNum1 : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => s_num1,
-        Q      => num_1
-    );
-
-    RegNum2 : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => s_num2,
-        Q      => num_2
-    );
-
-    RegNum3 : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => s_num3,
-        Q      => num_3
-    );
-
-    RegNum4 : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => s_num4,
-        Q      => num_4
-    );
-
-    RegDisplay : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => t_display,
-        Q      => s_display
-    );
+    nums <= (("00", "01", "10", "11", "11"),
+    ("00", "01", "10", "11", "00"),
+    ("01", "10", "11", "00", "01"),
+    ("10", "11", "00", "01", "10"),
+    ("11", "00", "01", "10", "11"));
 
     s_chaveacionada <= chaves(0) or chaves(1) or chaves(2) or chaves(3);
 
@@ -274,20 +157,50 @@ begin
         meio    => open
     );
 
+    s_display <= nums(0)(to_integer(unsigned(s_estagio)));
+    s_num_1   <= nums(1)(to_integer(unsigned(s_estagio)));
+    s_num_2   <= nums(2)(to_integer(unsigned(s_estagio)));
+    s_num_3   <= nums(3)(to_integer(unsigned(s_estagio)));
+    s_num_4   <= nums(4)(to_integer(unsigned(s_estagio)));
+
+    DecNum1 : decoder_2
+    port map(
+        a => s_num_1,
+        b => num_1
+    );
+
+    DecNum2 : decoder_2
+    port map(
+        a => s_num_2,
+        b => num_2
+    );
+
+    DecNum3 : decoder_2
+    port map(
+        a => s_num_3,
+        b => num_3
+    );
+
+    DecNum4 : decoder_2
+    port map(
+        a => s_num_4,
+        b => num_4
+    );
+
     with pos_jogada select
-        num_jogado <= num_1 when "0001",
-        num_2 when "0010",
-        num_3 when "0100",
-        num_4 when "1000",
-        "0000" when others;
+    num_jogado <= num_1 when "0001",
+    num_2 when "0010",
+    num_3 when "0100",
+    num_4 when "1000",
+    "0000" when others;
 
     with sel_jogada select
-        s_jogada <= pos_jogada when '1',
-        num_jogado when others;
+    s_jogada <= pos_jogada when '1',
+    num_jogado when others;
 
     with sel_addr select
-        s_endereco <= s_estagio when '1',
-        estagio_passado when others;
+    s_endereco <= s_estagio when '1',
+    estagio_passado when others;
 
     MemNum : entity work.ram_8x4 (ram_mif) -- usar esta linha para Intel Quartus
         -- MemNum : entity work.ram_8x4 (ram_modelsim) -- usar arquitetura para ModelSim
@@ -312,42 +225,42 @@ begin
         );
 
     sel_jogada <= '1' when ((s_estagio = "000") or
-        (s_estagio = "001" and not (s_display = "00")) or
-        (s_estagio = "010" and s_display = "10") or
-        (s_estagio = "011")) else
-        '0';
+    (s_estagio = "001" and not (s_display = "00")) or
+    (s_estagio = "010" and s_display = "10") or
+    (s_estagio = "011")) else
+    '0';
 
     estagio_passado <= "000" when ((s_estagio = "001" and (s_display = "01" or s_display = "11")) or
-        (s_estagio = "010" and s_display = "01") or
-        (s_estagio = "011" and s_display = "00") or
-        (s_estagio = "100" and s_display = "00")) else
-        "001" when ((s_estagio = "010" and s_display = "00") or
-        (s_estagio = "011" and (s_display = "10" or s_display = "11")) or
-        (s_estagio = "100" and s_display = "01")) else
-        "010" when ((s_estagio = "100" and s_display = "11")) else
-        "011" when ((s_estagio = "100" and s_display = "10")) else
-        "100";
+    (s_estagio = "010" and s_display = "01") or
+    (s_estagio = "011" and s_display = "00") or
+    (s_estagio = "100" and s_display = "00")) else
+    "001" when ((s_estagio = "010" and s_display = "00") or
+    (s_estagio = "011" and (s_display = "10" or s_display = "11")) or
+    (s_estagio = "100" and s_display = "01")) else
+    "010" when ((s_estagio = "100" and s_display = "11")) else
+    "011" when ((s_estagio = "100" and s_display = "10")) else
+    "100";
 
     sel_dado <= "00" when ((s_estagio = "010" and (s_display = "00" or s_display = "01")) or
-        (s_estagio = "100")) else
-        "01" when ((s_estagio = "001" and (s_display = "01" or s_display = "11")) or
-        (s_estagio = "011" and not (s_display = "01"))) else
-        "10";
+    (s_estagio = "100")) else
+    "01" when ((s_estagio = "001" and (s_display = "01" or s_display = "11")) or
+    (s_estagio = "011" and not (s_display = "01"))) else
+    "10";
 
     valor <= "0001" when ((s_estagio = "001" and s_display = "10") or
-        (s_estagio = "011" and s_display = "01")) else
-        "0010" when (s_estagio = "000" and (s_display = "00" or s_display = "01")) else
-        "0100" when ((s_estagio = "000" and s_display = "10") or
-        (s_estagio = "010" and s_display = "10")) else
-        "1000" when ((s_estagio = "000" and s_display = "11") or
-        (s_estagio = "001" and s_display = "00")) else
-        "0000";
+    (s_estagio = "011" and s_display = "01")) else
+    "0010" when (s_estagio = "000" and (s_display = "00" or s_display = "01")) else
+    "0100" when ((s_estagio = "000" and s_display = "10") or
+    (s_estagio = "010" and s_display = "10")) else
+    "1000" when ((s_estagio = "000" and s_display = "11") or
+    (s_estagio = "001" and s_display = "00")) else
+    "0000";
 
     with sel_dado select
-        s_dado <= mem_num when "00",
-        mem_pos when "01",
-        valor when "10",
-        "0000" when others;
+    s_dado <= mem_num when "00",
+    mem_pos when "01",
+    valor when "10",
+    "0000" when others;
 
     CompJog : comparador_85
     port map(
@@ -369,9 +282,9 @@ begin
 
     estagio <= s_estagio;
     display <= std_logic_vector(to_unsigned(to_integer(unsigned(s_display)) + 1, 4));
-    num1    <= std_logic_vector(to_unsigned(to_integer(unsigned(num_1)) + 1, 4));
-    num2    <= std_logic_vector(to_unsigned(to_integer(unsigned(num_2)) + 1, 4));
-    num3    <= std_logic_vector(to_unsigned(to_integer(unsigned(num_3)) + 1, 4));
-    num4    <= std_logic_vector(to_unsigned(to_integer(unsigned(num_4)) + 1, 4));
+    num1    <= std_logic_vector(to_unsigned(to_integer(unsigned(s_num_1)) + 1, 4));
+    num2    <= std_logic_vector(to_unsigned(to_integer(unsigned(s_num_2)) + 1, 4));
+    num3    <= std_logic_vector(to_unsigned(to_integer(unsigned(s_num_3)) + 1, 4));
+    num4    <= std_logic_vector(to_unsigned(to_integer(unsigned(s_num_4)) + 1, 4));
 
 end architecture estrutural;
