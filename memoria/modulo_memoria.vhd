@@ -9,7 +9,7 @@ entity modulo_memoria is
         botoes    : in std_logic_vector (3 downto 0);
         pronto    : out std_logic;
         err       : out std_logic;
-        estagio   : out std_logic_vector (2 downto 0);
+        estagio   : out std_logic_vector (4 downto 0);
         display   : out std_logic_vector (6 downto 0);
         num1      : out std_logic_vector (6 downto 0);
         num2      : out std_logic_vector (6 downto 0);
@@ -21,10 +21,10 @@ end entity;
 
 architecture estrutural of modulo_memoria is
 
-    signal zeraE, contaE, limpaJ, registraN, registraJ, escreve, fimE, jogada_feita, jogada_correta, sel_addr : std_logic;
-    signal num1_t, num2_t, num3_t, num4_t, display_t, db_estado_t                                             : std_logic_vector (3 downto 0);
+    signal zeraE, contaE, limpaJ, registraN, registraJ, escreve, fimE, jogada_feita, jogada_correta, sel_addr, s_pronto : std_logic;
+    signal num1_t, num2_t, num3_t, num4_t, display_t, db_estado_t, estagio_t                                            : std_logic_vector (3 downto 0);
 
-    component fluxo_dados
+    component fluxo_dados_mem
         port (
             clock          : in std_logic;
             zeraE          : in std_logic;
@@ -35,7 +35,7 @@ architecture estrutural of modulo_memoria is
             escreve        : in std_logic;
             sel_addr       : in std_logic;
             chaves         : in std_logic_vector (3 downto 0);
-            estagio        : out std_logic_vector (2 downto 0);
+            estagio        : out std_logic_vector (3 downto 0);
             display        : out std_logic_vector (3 downto 0);
             num1           : out std_logic_vector (3 downto 0);
             num2           : out std_logic_vector (3 downto 0);
@@ -47,7 +47,7 @@ architecture estrutural of modulo_memoria is
         );
     end component;
 
-    component unidade_controle is
+    component unidade_controle_mem is
         port (
             clock          : in std_logic;
             reset          : in std_logic;
@@ -77,7 +77,7 @@ architecture estrutural of modulo_memoria is
 
 begin
 
-    fd : fluxo_dados
+    fd : fluxo_dados_mem
     port map(
         clock          => clock,
         zeraE          => zeraE,
@@ -88,7 +88,7 @@ begin
         escreve        => escreve,
         sel_addr       => sel_addr,
         chaves         => botoes,
-        estagio        => estagio,
+        estagio        => estagio_t,
         display        => display_t,
         num1           => num1_t,
         num2           => num2_t,
@@ -99,7 +99,7 @@ begin
         jogada_correta => jogada_correta
     );
 
-    uc : unidade_controle
+    uc : unidade_controle_mem
     port map(
         clock          => clock,
         reset          => reset,
@@ -115,7 +115,7 @@ begin
         escreve        => escreve,
         sel_addr       => sel_addr,
         err            => err,
-        pronto         => pronto,
+        pronto         => s_pronto,
         db_estado      => db_estado_t
     );
 
@@ -154,5 +154,8 @@ begin
         hexa => db_estado_t,
         sseg => db_estado
     );
+
+    estagio <= s_pronto & estagio_t;
+    pronto  <= s_pronto;
 
 end architecture estrutural;

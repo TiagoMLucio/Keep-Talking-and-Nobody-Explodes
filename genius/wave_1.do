@@ -6,7 +6,7 @@ add wave -noupdate -height 40 /modulo_genius_tb/dut/clock
 add wave -noupdate -height 40 /modulo_genius_tb/rst_in
 add wave -noupdate -height 40 /modulo_genius_tb/iniciar_in
 add wave -noupdate -height 40 /modulo_genius_tb/botoes_in
-add wave -noupdate -height 40 /modulo_genius_tb/tem_vogal_in
+add wave -noupdate -height 40 /modulo_genius_tb/tem_letra_in
 add wave -noupdate -height 40 -radix unsigned /modulo_genius_tb/erros_in
 add wave -noupdate -divider Saidas
 add wave -noupdate -height 40 /modulo_genius_tb/pronto_out

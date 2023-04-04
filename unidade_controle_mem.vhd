@@ -1,5 +1,5 @@
 --------------------------------------------------------------------
--- Arquivo   : unidade_controle.vhd
+-- Arquivo   : unidade_controle_mem.vhd
 -- Projeto   : Keep Talking and Nobody Explodes (Módulo Gênius)
 --------------------------------------------------------------------
 -- Descricao : unidade de controle 
@@ -14,7 +14,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity unidade_controle is
+entity unidade_controle_mem is
     port (
         clock          : in std_logic;
         reset          : in std_logic;
@@ -35,7 +35,7 @@ entity unidade_controle is
     );
 end entity;
 
-architecture fsm of unidade_controle is
+architecture fsm of unidade_controle_mem is
     type t_estado is (inicial, preparacao, inicio_est, espera, registra, salva, compara, ultimo, proximo, errou, fim_acertou);
 
     signal Eatual, Eprox : t_estado;

@@ -11,7 +11,8 @@ entity fluxo_dados is
         clearS       : in std_logic;
         registerS    : in std_logic;
         resetE       : in std_logic;
-        db_err       : in std_logic;
+        err_gen      : in std_logic;
+        err_mem      : in std_logic;
         endT         : out std_logic;
         minutes      : out integer;
         seconds_ten  : out integer;
@@ -25,9 +26,9 @@ end entity fluxo_dados;
 
 architecture structural of fluxo_dados is
 
-    signal serials                                                    : std_logic_vector(7 downto 0);
-    signal serial1_s, serial2_s                                       : std_logic_vector(3 downto 0);
-    signal db_out_ready1, db_out_ready2, db_out_valid1, db_out_valid2 : std_logic;
+    signal serials                                                         : std_logic_vector(7 downto 0);
+    signal serial1_s, serial2_s                                            : std_logic_vector(3 downto 0);
+    signal err, db_out_ready1, db_out_ready2, db_out_valid1, db_out_valid2 : std_logic;
 
     component contador_m is
         generic (
@@ -134,10 +135,12 @@ begin
         clock   => clock,
         zera_as => '0',
         zera_s  => resetE,
-        conta   => db_err,
+        conta   => err,
         Q       => errors,
         fim     => endE,
         meio    => open
     );
+
+    err <= err_mem or err_gen;
 
 end architecture structural;

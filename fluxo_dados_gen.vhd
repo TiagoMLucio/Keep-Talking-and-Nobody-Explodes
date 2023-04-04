@@ -1,5 +1,5 @@
 --------------------------------------------------------------------
--- Arquivo   : fluxo_dados.vhd
+-- Arquivo   : fluxo_dados_gen.vhd
 -- Projeto   : Experiencia 5
 --------------------------------------------------------------------
 -- Descricao :
@@ -19,7 +19,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-entity fluxo_dados is
+entity fluxo_dados_gen is
     port (
         clock               : in std_logic;
         zeraE               : in std_logic;
@@ -28,11 +28,11 @@ entity fluxo_dados is
         contaE              : in std_logic;
         contaCR             : in std_logic;
         contaT              : in std_logic;
-        registraRN : in std_logic;
+        registraRN          : in std_logic;
         limpaRC             : in std_logic;
         registraRC          : in std_logic;
         leds_mem            : in std_logic;
-        tem_vogal           : in std_logic;
+        tem_letra           : in std_logic;
         erros               : in std_logic_vector(1 downto 0);
         chaves              : in std_logic_vector (3 downto 0);
         jogada_correta      : out std_logic;
@@ -48,20 +48,20 @@ entity fluxo_dados is
         db_rodada           : out std_logic_vector (3 downto 0);
         db_jogada           : out std_logic_vector (3 downto 0)
     );
-end entity fluxo_dados;
+end entity fluxo_dados_gen;
 
-architecture estrutural of fluxo_dados is
+architecture estrutural of fluxo_dados_gen is
 
-    type array_slv2 is array(natural range <>) of std_logic_vector(1 downto 0); 
-    type array_slv4 is array(natural range <>) of std_logic_vector(3 downto 0); 
+    type array_slv2 is array(natural range <>) of std_logic_vector(1 downto 0);
+    type array_slv4 is array(natural range <>) of std_logic_vector(3 downto 0);
 
-    signal endereco, rodada                                          : std_logic_vector (1 downto 0);
-    signal s_endereco, s_dado, s_novo_dado, s_jogada, s_rodada       : std_logic_vector (3 downto 0);
-    signal prn_colors                                                    : std_logic_vector (7 downto 0);
-    signal s_not_zeraE, s_not_zeraCR, s_chaveacionada : std_logic;
-    signal sel_colors                                                : array_slv2(3 downto 0);
-    signal s_colors                                                  : array_slv4(3 downto 0);
-    signal colors                                                    : array_slv4(3 downto 0);
+    signal endereco, rodada                                    : std_logic_vector (1 downto 0);
+    signal s_endereco, s_dado, s_novo_dado, s_jogada, s_rodada : std_logic_vector (3 downto 0);
+    signal prn_colors                                          : std_logic_vector (7 downto 0);
+    signal s_not_zeraE, s_not_zeraCR, s_chaveacionada          : std_logic;
+    signal sel_colors                                          : array_slv2(3 downto 0);
+    signal s_colors                                            : array_slv4(3 downto 0);
+    signal colors                                              : array_slv4(3 downto 0);
 
     component comparador_85
         port (
@@ -139,32 +139,32 @@ begin
     -- "0010" -> Azul
     -- "0100" -> Verde
     -- "1000" -> Amarelo
-    s_novo_dado <= "0001" when (erros = "00" and s_dado = "1000" and tem_vogal = '0') or
-        (erros = "00" and s_dado = "0010" and tem_vogal = '1') or
-        (erros = "01" and s_dado = "0001" and tem_vogal = '0') or
-        (erros = "01" and s_dado = "1000" and tem_vogal = '1') or
-        (erros = "10" and s_dado = "1000" and tem_vogal = '0') or
-        (erros = "10" and s_dado = "0010" and tem_vogal = '1') else
+    s_novo_dado <= "0001" when (erros = "00" and s_dado = "1000" and tem_letra = '0') or
+        (erros = "00" and s_dado = "0010" and tem_letra = '1') or
+        (erros = "01" and s_dado = "0001" and tem_letra = '0') or
+        (erros = "01" and s_dado = "1000" and tem_letra = '1') or
+        (erros = "10" and s_dado = "1000" and tem_letra = '0') or
+        (erros = "10" and s_dado = "0010" and tem_letra = '1') else
 
         "0010" when (erros = "00" and s_dado = "0001") or
-        (erros = "01" and tem_vogal = '0' and s_dado = "0010") or
-        (erros = "01" and tem_vogal = '1' and s_dado = "0100") or
-        (erros = "10" and tem_vogal = '0' and s_dado = "0100") or
-        (erros = "10" and tem_vogal = '1' and s_dado = "1000") else
+        (erros = "01" and tem_letra = '0' and s_dado = "0010") or
+        (erros = "01" and tem_letra = '1' and s_dado = "0100") or
+        (erros = "10" and tem_letra = '0' and s_dado = "0100") or
+        (erros = "10" and tem_letra = '1' and s_dado = "1000") else
 
-        "0100" when (erros = "10" and tem_vogal = '1' and s_dado = "0001") or
-        (erros = "01" and tem_vogal = '1' and s_dado = "0010") or
-        (erros = "10" and tem_vogal = '0' and s_dado = "0010") or
-        (erros = "00" and tem_vogal = '0' and s_dado = "0100") or
-        (erros = "00" and tem_vogal = '1' and s_dado = "1000") or
-        (erros = "01" and tem_vogal = '0' and s_dado = "1000") else
+        "0100" when (erros = "10" and tem_letra = '1' and s_dado = "0001") or
+        (erros = "01" and tem_letra = '1' and s_dado = "0010") or
+        (erros = "10" and tem_letra = '0' and s_dado = "0010") or
+        (erros = "00" and tem_letra = '0' and s_dado = "0100") or
+        (erros = "00" and tem_letra = '1' and s_dado = "1000") or
+        (erros = "01" and tem_letra = '0' and s_dado = "1000") else
 
-        "1000" when (erros = "01" and tem_vogal = '1' and s_dado = "0001") or
-        (erros = "10" and tem_vogal = '0' and s_dado = "0001") or
-        (erros = "00" and tem_vogal = '0' and s_dado = "0010") or
-        (erros = "00" and tem_vogal = '1' and s_dado = "0100") or
-        (erros = "10" and tem_vogal = '1' and s_dado = "0100") or
-        (erros = "01" and tem_vogal = '0' and s_dado = "0100");
+        "1000" when (erros = "01" and tem_letra = '1' and s_dado = "0001") or
+        (erros = "10" and tem_letra = '0' and s_dado = "0001") or
+        (erros = "00" and tem_letra = '0' and s_dado = "0010") or
+        (erros = "00" and tem_letra = '1' and s_dado = "0100") or
+        (erros = "10" and tem_letra = '1' and s_dado = "0100") or
+        (erros = "01" and tem_letra = '0' and s_dado = "0100");
 
     ContEnd : contador_m
     generic map(
@@ -284,7 +284,7 @@ begin
     sel_colors(3) <= prn_colors(1) & prn_colors(5);
 
     colors_gen : for i in 0 to 3 generate
-        Dec: decoder_2 
+        Dec : decoder_2
         port map(
             a => sel_colors(i),
             b => s_colors(i)
@@ -298,17 +298,17 @@ begin
             clock  => clock,
             clear  => limpaRC,
             enable => registraRN,
-            D => s_colors(i),
-            Q => colors(i)
+            D      => s_colors(i),
+            Q      => colors(i)
         );
     end generate; -- colors_gen
 
     with endereco select
-    s_dado <= colors(0) when "00",
+        s_dado <= colors(0) when "00",
         colors(1) when "01",
         colors(2) when "10",
         colors(3) when "11",
-        "0000" when others; 
+        "0000" when others;
 
     with leds_mem select
         leds <= s_dado when '1',

@@ -18,7 +18,7 @@ architecture tb of modulo_memoria_tb is
     botoes    : in std_logic_vector (3 downto 0);
     pronto    : out std_logic;
     err       : out std_logic;
-    estagio   : out std_logic_vector (2 downto 0);
+    estagio   : out std_logic_vector (4 downto 0);
     display   : out std_logic_vector (6 downto 0);
     num1      : out std_logic_vector (6 downto 0);
     num2      : out std_logic_vector (6 downto 0);
@@ -37,7 +37,7 @@ architecture tb of modulo_memoria_tb is
   ---- Declaracao dos sinais de saida
   signal pronto_out   : std_logic                    := '0';
   signal errou_out    : std_logic                    := '0';
-  signal estagio_out  : std_logic_vector(2 downto 0) := "000";
+  signal estagio_out  : std_logic_vector(4 downto 0) := "00000";
   signal display_out  : std_logic_vector(6 downto 0) := "0000000";
   signal num1_out     : std_logic_vector(6 downto 0) := "0000000";
   signal num2_out     : std_logic_vector(6 downto 0) := "0000000";
@@ -79,10 +79,10 @@ begin
     type pattern_array is array (integer range <>) of std_logic_vector(3 downto 0);
     constant jogadas : pattern_array (0 to 4) := (
       "0010", 
-      "0010", 
+      "1000", 
       "0100", 
       "0010",
-      "0001");
+      "0100");
 
   begin
     report "BOT" severity note;
@@ -95,6 +95,8 @@ begin
     rst_in <= '1';
     wait for clockPeriod;
     rst_in <= '0';
+
+    wait for 100 * clockPeriod;
 
     -- pulso do sinal de Iniciar (muda na borda de descida do clock)
     wait until falling_edge(clk_in);

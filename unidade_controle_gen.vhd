@@ -1,5 +1,5 @@
 --------------------------------------------------------------------
--- Arquivo   : unidade_controle.vhd
+-- Arquivo   : unidade_controle_gen.vhd
 -- Projeto   : Keep Talking and Nobody Explodes (Módulo Gênius)
 --------------------------------------------------------------------
 -- Descricao : unidade de controle 
@@ -14,7 +14,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity unidade_controle is
+entity unidade_controle_gen is
     port (
         clock               : in std_logic;
         reset               : in std_logic;
@@ -41,7 +41,7 @@ entity unidade_controle is
     );
 end entity;
 
-architecture fsm of unidade_controle is
+architecture fsm of unidade_controle_gen is
     type t_estado is (inicial, preparacao, espera_led, mostra_led, proximo_led,
         compara_led, espera_led2, inicio_rod, compara_jog, proxima_jog, espera_jog, 
         registra, errou_jog, ultima_rod, proxima_rod, fim_acertou);

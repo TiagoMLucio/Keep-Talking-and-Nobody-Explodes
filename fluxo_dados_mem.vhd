@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-entity fluxo_dados is
+entity fluxo_dados_mem is
     port (
         clock          : in std_logic;
         zeraE          : in std_logic;
@@ -14,7 +14,7 @@ entity fluxo_dados is
         escreve        : in std_logic;
         sel_addr       : in std_logic;
         chaves         : in std_logic_vector (3 downto 0);
-        estagio        : out std_logic_vector (2 downto 0);
+        estagio        : out std_logic_vector (3 downto 0);
         display        : out std_logic_vector (3 downto 0);
         num1           : out std_logic_vector (3 downto 0);
         num2           : out std_logic_vector (3 downto 0);
@@ -24,17 +24,17 @@ entity fluxo_dados is
         jogada_feita   : out std_logic;
         jogada_correta : out std_logic
     );
-end entity fluxo_dados;
+end entity fluxo_dados_mem;
 
-architecture estrutural of fluxo_dados is
+architecture estrutural of fluxo_dados_mem is
 
-    signal s_chaveacionada, sel_jogada, s_not_escreve                                       : std_logic;
-    signal sel_display, sel_num1, sel_num2, sel_num3, sel_num4, sel_dado                    : std_logic_vector(1 downto 0);
-    signal s_endereco, s_estagio, estagio_passado, sel_prns                                 : std_logic_vector(2 downto 0);
-    signal pos_jogada, num_jogado, s_jogada, mem_num, mem_pos, valor, s_dado                : std_logic_vector(3 downto 0);
-    signal t_display, s_display, s_num1, s_num2, s_num3, s_num4, num_1, num_2, num_3, num_4 : std_logic_vector(3 downto 0);
-    signal prns                                                                             : std_logic_vector(6 downto 0);
-    signal nums_t, nums                                                                     : std_logic_vector(7 downto 0);
+    signal s_chaveacionada, sel_jogada, s_not_escreve                                                               : std_logic;
+    signal sel_display, sel_num1, sel_num2, sel_num3, sel_num4, sel_dado, s_display, s_num1, s_num2, s_num3, s_num4 : std_logic_vector(1 downto 0);
+    signal s_endereco, s_estagio, estagio_passado, sel_prns                                                         : std_logic_vector(2 downto 0);
+    signal pos_jogada, num_jogado, s_jogada, mem_num, mem_pos, valor, s_dado                                        : std_logic_vector(3 downto 0);
+    signal t_display, num_1, num_2, num_3, num_4                                                                    : std_logic_vector(3 downto 0);
+    signal prns                                                                                                     : std_logic_vector(6 downto 0);
+    signal nums_t, nums                                                                                             : std_logic_vector(7 downto 0);
 
     component comparador_85
         port (
@@ -121,7 +121,7 @@ begin
     port map(
         clock   => clock,
         zera_as => '0',
-        zera_s  => limpaJ,
+        zera_s  => '0',
         conta   => '1',
         Q       => prns,
         fim     => open,
@@ -148,94 +148,94 @@ begin
     sel_num3 <= nums(5 downto 4);
     sel_num4 <= nums(7 downto 6);
 
+    RegDisplay : registrador_n
+    generic map(
+        2
+    )
+    port map(
+        clock  => clock,
+        clear  => limpaJ,
+        enable => registraN,
+        D      => sel_display,
+        Q      => s_display
+    );
+
+    RegNum1 : registrador_n
+    generic map(
+        2
+    )
+    port map(
+        clock  => clock,
+        clear  => limpaJ,
+        enable => registraN,
+        D      => sel_num1,
+        Q      => s_num1
+    );
+
+    RegNum2 : registrador_n
+    generic map(
+        2
+    )
+    port map(
+        clock  => clock,
+        clear  => limpaJ,
+        enable => registraN,
+        D      => sel_num2,
+        Q      => s_num2
+    );
+
+    RegNum3 : registrador_n
+    generic map(
+        2
+    )
+    port map(
+        clock  => clock,
+        clear  => limpaJ,
+        enable => registraN,
+        D      => sel_num3,
+        Q      => s_num3
+    );
+
+    RegNum4 : registrador_n
+    generic map(
+        2
+    )
+    port map(
+        clock  => clock,
+        clear  => limpaJ,
+        enable => registraN,
+        D      => sel_num4,
+        Q      => s_num4
+    );
+
     DecDisplay : decoder_2
     port map(
-        a => sel_display,
+        a => s_display,
         b => t_display
     );
 
     DecNum1 : decoder_2
     port map(
-        a => sel_num1,
-        b => s_num1
+        a => s_num1,
+        b => num_1
     );
 
     DecNum2 : decoder_2
     port map(
-        a => sel_num2,
-        b => s_num2
+        a => s_num2,
+        b => num_2
     );
 
     DecNum3 : decoder_2
     port map(
-        a => sel_num3,
-        b => s_num3
+        a => s_num3,
+        b => num_3
     );
 
     DecNum4 : decoder_2
     port map(
-        a => sel_num4,
-        b => s_num4
-    );
-
-    RegNum1 : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => s_num1,
-        Q      => num_1
-    );
-
-    RegNum2 : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => s_num2,
-        Q      => num_2
-    );
-
-    RegNum3 : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => s_num3,
-        Q      => num_3
-    );
-
-    RegNum4 : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => s_num4,
-        Q      => num_4
-    );
-
-    RegDisplay : registrador_n
-    generic map(
-        4
-    )
-    port map(
-        clock  => clock,
-        clear  => limpaJ,
-        enable => registraN,
-        D      => t_display,
-        Q      => s_display
+        a => s_num4,
+        b => num_4
     );
 
     s_chaveacionada <= chaves(0) or chaves(1) or chaves(2) or chaves(3);
@@ -367,11 +367,18 @@ begin
         o_AEQB => jogada_correta
     );
 
-    estagio <= s_estagio;
+    with s_estagio select
+        estagio <= "0000" when "000",
+        "0001" when "001",
+        "0011" when "010",
+        "0111" when "011",
+        "1111" when "100",
+        "1111" when others;
+
     display <= std_logic_vector(to_unsigned(to_integer(unsigned(s_display)) + 1, 4));
-    num1    <= std_logic_vector(to_unsigned(to_integer(unsigned(num_1)) + 1, 4));
-    num2    <= std_logic_vector(to_unsigned(to_integer(unsigned(num_2)) + 1, 4));
-    num3    <= std_logic_vector(to_unsigned(to_integer(unsigned(num_3)) + 1, 4));
-    num4    <= std_logic_vector(to_unsigned(to_integer(unsigned(num_4)) + 1, 4));
+    num1    <= std_logic_vector(to_unsigned(to_integer(unsigned(s_num1)) + 1, 4));
+    num2    <= std_logic_vector(to_unsigned(to_integer(unsigned(s_num2)) + 1, 4));
+    num3    <= std_logic_vector(to_unsigned(to_integer(unsigned(s_num3)) + 1, 4));
+    num4    <= std_logic_vector(to_unsigned(to_integer(unsigned(s_num4)) + 1, 4));
 
 end architecture estrutural;

@@ -16,7 +16,7 @@ architecture tb of modulo_genius_tb_2 is
     reset       : in std_logic;
     iniciar     : in std_logic;
     botoes      : in std_logic_vector (3 downto 0);
-    tem_vogal   : in std_logic;
+    tem_letra   : in std_logic;
     erros       : in std_logic_vector(1 downto 0);
 
     pronto      : out std_logic;
@@ -37,7 +37,7 @@ architecture tb of modulo_genius_tb_2 is
   signal rst_in       : std_logic                     := '0';
   signal iniciar_in   : std_logic                     := '0';
   signal botoes_in    : std_logic_vector(3 downto 0)  := "0000";
-  signal tem_vogal_in : std_logic                     := '0';
+  signal tem_letra_in : std_logic                     := '0';
   signal erros_in     : std_logic_vector(1 downto 0)  := "00";
 
   ---- Declaracao dos sinais de saida
@@ -69,7 +69,7 @@ begin
     reset       => rst_in,
     iniciar     => iniciar_in,
     botoes      => botoes_in,
-    tem_vogal   => tem_vogal_in,
+    tem_letra   => tem_letra_in,
     erros       => erros_in,
     pronto      => pronto_out,
     errou       => errou_out,
