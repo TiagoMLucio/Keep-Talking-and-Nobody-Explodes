@@ -141,7 +141,7 @@ begin
         "01101100" when "101",
         "00000000" when others;
 
-    nums <= nums_t(nums_t'length - 2 * to_integer(unsigned(prns(3 downto 2))) - 1 downto 0) & nums_t(nums_t'length - 1 downto nums_t'length - 2 * to_integer(unsigned(prns(3 downto 2))));
+    nums <= to_stdlogicvector(to_bitvector(nums_t) ror 2 * to_integer(unsigned(prns(3 downto 2))));
 
     sel_num1 <= nums(1 downto 0);
     sel_num2 <= nums(3 downto 2);
